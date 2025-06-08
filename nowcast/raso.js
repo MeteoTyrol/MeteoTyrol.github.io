@@ -13,14 +13,119 @@ const rasoData = {
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [11.355, 47.260]
+        "coordinates": [11.355, 47.260],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10868,
+      "properties": {
+        "name": "MUENCHEN-OBERSCHLEISSHEIM, GERMANY",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.553, 48.245],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11010,
+      "properties": {
+        "name": "LINZ/HOERSCHING-FLUGHAFEN, AUSTRIA",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [14.201, 48.232],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11035,
+      "properties": {
+        "name": "WIEN/HOHE WARTE, AUSTRIA",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [16.358, 48.249],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11240,
+      "properties": {
+        "name": "GRAZ-THALERHOF-FLUGHAFEN, AUSTRIA",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [15.447, 46.994],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 16064,
+      "properties": {
+        "name": "NOVARA CAMERI, ITALY",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8.670, 45.530],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 06610,
+      "properties": {
+        "name": "PAYERN, Switzerland",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [6.943, 46.812],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 16045,
+      "properties": {
+        "name": "RIVOLTO, ITALY",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [13.047, 45.982],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 14240,
+      "properties": {
+        "name": "ZAGREB/MAKSIMIR, CROATIA",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [16.034, 45.821],
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10739,
+      "properties": {
+        "name": "STUTTGART/SCHNARRENBERG, GERMANY",
+        "launch_time": "00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [9.201, 48.828],
       }
     }
   ]
 };
-
-
-
 
 
 // Radiosondes
@@ -51,7 +156,7 @@ async function loadRadiosond() {
             let url = `https://weather.uwyo.edu/upperair/imgs/${date}${time}.${id}.skewt.png`;
             console.log(url);
             layer.bindPopup(`
-                <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 500px; height: auto;"></a>
+                <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
                 <a href="${url}" target="raso">Skew T Diagramm</a>
             `);

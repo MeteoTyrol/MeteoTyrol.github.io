@@ -133,7 +133,7 @@ async function loadRadiosond() {
     let geojson = rasoData;
     
     L.geoJSON(geojson, {
-        attribution: 'Datenquelle: <a href= "https://data.wien.gv.at"> Stadt Wien </a>',
+        attribution: 'Datenquelle: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
         
         pointToLayer: function (feature, latlng) {
             console.log(feature.properties)

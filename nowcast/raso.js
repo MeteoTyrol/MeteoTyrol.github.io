@@ -130,37 +130,38 @@ const rasoData = {
 
 // Radiosondes
 async function loadRadiosonde(date) {
-    
-    let geojson = rasoData;
-    
-    L.geoJSON(geojson, {
-        attribution: 'Datenquelle: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
-        
-        pointToLayer: function (feature, latlng) {
-            //console.log(feature.properties)
-            
-            return L.marker(latlng,
-                {
-                    icon: L.icon({
-                        iconUrl: './photo.png',
-                        iconAnchor: [16, 37],
-                        popupAnchor: [0, -37],
-                    })
-                }
-            );
-        },
-        onEachFeature: function (feature, layer) {
-            //console.log(feature.properties);
-            let time = feature.properties.launch_time;
-            let id = feature.id;
-            let url = `https://weather.uwyo.edu/upperair/imgs/${date}${time}.${id}.skewt.png`;
-            //console.log(url);
-            layer.bindPopup(`
+
+  let geojson = rasoData;
+
+  L.geoJSON(geojson, {
+    attribution: 'Datenquelle: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
+
+    pointToLayer: function (feature, latlng) {
+      //console.log(feature.properties)
+      
+
+      return L.marker(latlng,
+        {
+          icon: L.icon({
+            iconUrl: './photo.png',
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -37],
+          })
+        }
+      );
+    },
+    onEachFeature: function (feature, layer) {
+      let time = feature.properties.launch_time;
+      let id = feature.id;
+      let url = `https://weather.uwyo.edu/upperair/imgs/${date}${time}.${id}.skewt.png`;
+      
+      console.log(getToday())
+      layer.bindPopup(`
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
                 <a href="${url}" target="raso">Skew T Diagramm</a>
             `);
-        }
-    }).addTo(overlays.raso);
+    }
+  }).addTo(overlays.raso);
 }
 

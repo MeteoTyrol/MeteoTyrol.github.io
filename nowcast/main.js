@@ -43,6 +43,17 @@ L.control.layers({
 
 ).addTo(map);
 
+/* KI_BEGIN */
+function getToday() {
+    // This function returns the current day in YYYYMMDD format
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}${mm}${dd}`;
+}
+/* KI_END */
+
 L.control.calendar({
     id: 1,
     minDate: "2024-01-01",
@@ -55,8 +66,8 @@ function loadAll(date_raw) {
     /* KI_BEGIN */
     let date = String(date_raw).replace(/-/g, "");
     /* KI_END */
-    loadRadiosonde(value);
-    loadCeilo(value);
+    loadRadiosonde(date);
+    loadCeilo(date);
 }
 
 

@@ -153,10 +153,8 @@ const ceiloData = {
 
 
 // Radiosondes
-async function loadCeilo(date_raw) {
-    /* KI_BEGIN */
-    let date = String(date_raw).replace(/-/g, "");
-    /* KI_END */
+async function loadCeilo(date) {
+    
     let geojson = ceiloData;
     
     L.geoJSON(geojson, {

@@ -51,7 +51,10 @@ L.control.calendar({
 
 }).addTo(map);
 
-function loadAll(value) {
+function loadAll(date_raw) {
+    /* KI_BEGIN */
+    let date = String(date_raw).replace(/-/g, "");
+    /* KI_END */
     loadRadiosonde(value);
     loadCeilo(value);
 }

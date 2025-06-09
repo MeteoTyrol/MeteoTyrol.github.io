@@ -43,6 +43,15 @@ L.control.layers({
 
 ).addTo(map);
 
+L.control.calendar({
+    id: 1,
+    minDate: "2024-01-01",
+    onSelectDate: (value) => {console.log("Date:"+ value);},
+    triggerFunctionOnLoad: true,
+
+}).addTo(map);
+
+
 
 
 

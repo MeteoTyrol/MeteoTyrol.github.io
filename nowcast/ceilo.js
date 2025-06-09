@@ -176,9 +176,10 @@ async function loadCeilo(date) {
         onEachFeature: function (feature, layer) {
             //console.log(feature.properties);
             let time = feature.properties.launch_time;
+            let YYYYMMDD = getYYYYMMDD(date)
             let id = feature.id;
-            let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${date}_MLH.png`;
-            let url_full= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${date}_CBH.png`;
+            let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_MLH.png`;
+            let url_full= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
             //console.log(url);
             layer.bindPopup(`
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>

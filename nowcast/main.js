@@ -43,16 +43,21 @@ L.control.layers({
 
 ).addTo(map);
 
-/* KI_BEGIN */
-function getToday() {
-    // This function returns the current day in YYYYMMDD format
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const dd = String(today.getDate()).padStart(2, '0');
+
+function getYYYYMMDD(date) {
+    // This function returns the date in YYYYMMDD format
+    // date should be a Date() object
+    /* KI_BEGIN */
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}${mm}${dd}`;
 }
 /* KI_END */
+
+// get the
+let today = Date()
+
 
 L.control.calendar({
     id: 1,
@@ -63,11 +68,10 @@ L.control.calendar({
 }).addTo(map);
 
 function loadAll(date_raw) {
-    /* KI_BEGIN */
-    let date = String(date_raw).replace(/-/g, "");
-    /* KI_END */
-    loadRadiosonde(date);
-    loadCeilo(date);
+    let dateObj = new Date(date_raw) //convert to Date object
+    YYYYMMDD = getYYYYMMDD(dateObj) // convert to YYYYMMDD 
+    loadRadiosonde(dateObj);
+    loadCeilo(dateObj);
 }
 
 

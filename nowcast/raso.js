@@ -138,7 +138,7 @@ async function loadRadiosonde(date) {
 
     pointToLayer: function (feature, latlng) {
       //console.log(feature.properties)
-      
+
 
       return L.marker(latlng,
         {
@@ -153,12 +153,16 @@ async function loadRadiosonde(date) {
     onEachFeature: function (feature, layer) {
       let time = feature.properties.launch_time;
       let id = feature.id;
-      let url = `https://weather.uwyo.edu/upperair/imgs/${date}${time}.${id}.skewt.png`;
-      
-      console.log(getToday())
+      let YYYYMMDD = getYYYYMMDD(date)
+      let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
+  
+      //console.log(dateObject)
       layer.bindPopup(`
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
+                <ul>
+                    <li> Date: ${date.toLocaleDateString()}
+                <ul>
                 <a href="${url}" target="raso">Skew T Diagramm</a>
             `);
     }

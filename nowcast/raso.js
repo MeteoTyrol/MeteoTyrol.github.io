@@ -153,7 +153,7 @@ async function loadRadiosonde(date) {
     onEachFeature: function (feature, layer) {
       let time = feature.properties.launch_time;
       let id = feature.id;
-      let YYYYMMDD = getYYYYMMDD(date)
+      let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
       let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
   
       //console.log(dateObject)

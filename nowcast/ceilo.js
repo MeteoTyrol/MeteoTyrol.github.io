@@ -174,11 +174,11 @@ async function loadCeilo(date) {
             );
         },
         onEachFeature: function (feature, layer) {
-            //console.log(feature.properties);
-            let time = feature.properties.launch_time;
-            let YYYYMMDD = getYYYYMMDD(date)
+            let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
             let id = feature.id;
+            // url for the visualization up to 3000m
             let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_MLH.png`;
+            // url for full range (14km)
             let url_full= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
            
             layer.bindPopup(`
@@ -188,7 +188,6 @@ async function loadCeilo(date) {
                     <li>Station ID: ${id}
                     <li>Date: ${date.toLocaleDateString()}
                     <li>Type: ${feature.properties.type} Noch Link hinzufügen!!!!
-
                 <ul>
                 <a href="${url_full}" target="ceilo">Full Range Plot</a>
             `);

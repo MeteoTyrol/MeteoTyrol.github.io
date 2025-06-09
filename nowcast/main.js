@@ -44,6 +44,9 @@ L.control.layers({
 ).addTo(map);
 
 
+
+// DATE handling
+
 function getYYYYMMDD(date) {
     // This function returns the date in YYYYMMDD format
     // date should be a Date() object
@@ -55,7 +58,7 @@ function getYYYYMMDD(date) {
 }
 /* KI_END */
 
-// get the
+// get the Date Object for today
 let today = Date()
 
 
@@ -68,8 +71,8 @@ L.control.calendar({
 }).addTo(map);
 
 function loadAll(date_raw) {
+    // calendar returns the format YYYY-MM-DD
     let dateObj = new Date(date_raw) //convert to Date object
-    YYYYMMDD = getYYYYMMDD(dateObj) // convert to YYYYMMDD 
     loadRadiosonde(dateObj);
     loadCeilo(dateObj);
 }
@@ -87,6 +90,3 @@ async function loadGeoJSON(url) {
     let geojson = await response.json();
 
 }
-
-
-

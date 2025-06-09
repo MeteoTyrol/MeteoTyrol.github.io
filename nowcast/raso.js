@@ -129,7 +129,12 @@ const rasoData = {
 
 
 // Radiosondes
-async function loadRadiosond() {
+async function loadRadiosonde(date_raw) {
+    console.log(date_raw)
+    /* KI_BEGIN */
+    let date = String(date_raw).replace(/-/g, "");
+    console.log(date)
+    /* KI_END */
     let geojson = rasoData;
     
     L.geoJSON(geojson, {
@@ -150,7 +155,6 @@ async function loadRadiosond() {
         },
         onEachFeature: function (feature, layer) {
             //console.log(feature.properties);
-            let date = "20250608";
             let time = feature.properties.launch_time;
             let id = feature.id;
             let url = `https://weather.uwyo.edu/upperair/imgs/${date}${time}.${id}.skewt.png`;
@@ -164,4 +168,3 @@ async function loadRadiosond() {
     }).addTo(overlays.raso);
 }
 
-loadRadiosond()

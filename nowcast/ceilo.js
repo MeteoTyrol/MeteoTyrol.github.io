@@ -160,7 +160,7 @@ async function loadCeilo() {
         attribution: 'Datenquelle: <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> GeoSphere Austria </a>',
         
         pointToLayer: function (feature, latlng) {
-            console.log(feature.properties)
+            //console.log(feature.properties)
             
             return L.marker(latlng,
                 {
@@ -179,7 +179,7 @@ async function loadCeilo() {
             let id = feature.id;
             let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${date}_MLH.png`;
             let url_full= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${date}_CBH.png`;
-            console.log(url);
+            //console.log(url);
             layer.bindPopup(`
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>

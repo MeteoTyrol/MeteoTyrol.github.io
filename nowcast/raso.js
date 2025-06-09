@@ -136,7 +136,7 @@ async function loadRadiosond() {
         attribution: 'Datenquelle: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
         
         pointToLayer: function (feature, latlng) {
-            console.log(feature.properties)
+            //console.log(feature.properties)
             
             return L.marker(latlng,
                 {
@@ -154,7 +154,7 @@ async function loadRadiosond() {
             let time = feature.properties.launch_time;
             let id = feature.id;
             let url = `https://weather.uwyo.edu/upperair/imgs/${date}${time}.${id}.skewt.png`;
-            console.log(url);
+            //console.log(url);
             layer.bindPopup(`
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>

@@ -180,10 +180,16 @@ async function loadCeilo(date) {
             let id = feature.id;
             let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_MLH.png`;
             let url_full= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
-            //console.log(url);
+           
             layer.bindPopup(`
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
+                <ul>
+                    <li>Station ID: ${id}
+                    <li>Date: ${date.toLocaleDateString()}
+                    <li>Type: ${feature.properties.type} Noch Link hinzufügen!!!!
+
+                <ul>
                 <a href="${url_full}" target="ceilo">Full Range Plot</a>
             `);
         }

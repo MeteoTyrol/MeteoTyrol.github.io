@@ -153,7 +153,10 @@ const ceiloData = {
 
 
 // Radiosondes
-async function loadCeilo() {
+async function loadCeilo(date_raw) {
+    /* KI_BEGIN */
+    let date = String(date_raw).replace(/-/g, "");
+    /* KI_END */
     let geojson = ceiloData;
     
     L.geoJSON(geojson, {
@@ -174,7 +177,6 @@ async function loadCeilo() {
         },
         onEachFeature: function (feature, layer) {
             //console.log(feature.properties);
-            let date = "20250609";
             let time = feature.properties.launch_time;
             let id = feature.id;
             let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${date}_MLH.png`;
@@ -189,4 +191,3 @@ async function loadCeilo() {
     }).addTo(overlays.ceilo);
 }
 
-loadCeilo()

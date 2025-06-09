@@ -130,10 +130,9 @@ const rasoData = {
 
 // Radiosondes
 async function loadRadiosonde(date_raw) {
-    console.log(date_raw)
+    
     /* KI_BEGIN */
     let date = String(date_raw).replace(/-/g, "");
-    console.log(date)
     /* KI_END */
     let geojson = rasoData;
     

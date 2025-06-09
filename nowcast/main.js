@@ -19,6 +19,7 @@ let overlays = {
     geosphere: L.featureGroup().addTo(map),
     aws: L.featureGroup().addTo(map),
     uibk: L.featureGroup().addTo(map),
+    ceilo: L.featureGroup().addTo(map),
 };
 
 // Hintergrund-Layer
@@ -35,6 +36,7 @@ L.control.layers({
         "Geosphere Stations": overlays.geosphere,
         "AWS Stations": overlays.aws,
         "UIBK Stations": overlays.uibk,
+        "Ceilometer": overlays.ceilo
 
     }
 

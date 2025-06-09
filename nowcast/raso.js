@@ -161,9 +161,11 @@ async function loadRadiosonde(date) {
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
                 <ul>
+                    <li> Station ID: ${id}
                     <li> Date: ${date.toLocaleDateString()}
-                <ul>
-                <a href="${url}" target="raso">Skew T Diagramm</a>
+                    <li> Time: ${time} UTC <!--Uhrzeiten werden in der Meteorologie Standardmäßig in UTC angegeben, desswegen machen wir es auch hier-->
+                    <li> <a href="${url}" target="raso">Skew T Diagramm</a>
+                <ul> 
             `);
     }
   }).addTo(overlays.raso);

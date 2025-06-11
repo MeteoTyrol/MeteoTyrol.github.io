@@ -19,7 +19,7 @@ const lidarData = {
     },
     {
       "type": "Feature",
-      "id": ,
+      "id": 0,
       "properties": {
         "name": "Nafingalm, WR21",
         "url_template_current":  "https://acinn-ertel.uibk.ac.at/ertel/data/wr21_lidar_current.png",
@@ -34,10 +34,10 @@ const lidarData = {
     },
     {
       "type": "Feature",
-      "id": ,
+      "id": 0,
       "properties": {
         "name": "Nafingalm, SL88",
-        "url_template_current":  "https://acinn-ertel.uibk.ac.at/ertel/data/pngs/lidar/lidar_current.png",
+        "url_current":  "https://acinn-ertel.uibk.ac.at/ertel/data/pngs/lidar/lidar_current.png",
         "url_template": "https://acinn-ertel.uibk.ac.at/ertel/data/pngs/lidar/{YYYYMMDD}.png",
         "height_asl_m": 1928,
         "type": "SL88",
@@ -49,10 +49,10 @@ const lidarData = {
     },
     {
         "type": "Feature",
-        "id": ,
+        "id": 0,
         "properties": {
         "name": "Innsbruck",
-        "url_template_current":  "https://acinn-ertel.uibk.ac.at/ertel/data/pngs/lidar_142/lidar_current.png",
+        "url_current":  "https://acinn-ertel.uibk.ac.at/ertel/data/pngs/lidar_142/lidar_current.png",
         "url_template": "https://acinn-ertel.uibk.ac.at/ertel/data/pngs/lidar_142/{YYYYMMDD}.png",
         "height_asl_m": 613,
         "type": "SLXR142",
@@ -81,10 +81,10 @@ async function loadLidar(date) {
   let geojson = lidarData;
 
   L.geoJSON(geojson, {
-    attribution: 'Lidar Data: <a href= "https://ertel2.uibk.ac.at/lidar-uebersicht/"> UIBK </a>' <a href= "https://ertel2.uibk.ac.at/lidar-uebersicht/"> UIBK </a>',
+    attribution: 'Lidar Data: <a href= "https://ertel2.uibk.ac.at/lidar-uebersicht/"> UIBK </a> <a href= "https://ertel2.uibk.ac.at/lidar-uebersicht/"> UIBK </a>',
 
     pointToLayer: function (feature, latlng) {
-      //console.log(feature.properties)
+      console.log(feature.properties)
 
 
       return L.marker(latlng,

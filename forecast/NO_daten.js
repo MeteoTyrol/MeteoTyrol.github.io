@@ -15,8 +15,23 @@ let map = L.map("map", {
         period: "PT1H"              // 1-Stunden-Schritte
     }
 });
-L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map);
+// thematische Layer
+let overlays = {
+    temperature: L.featureGroup(),
+    pressure: L.featureGroup().addTo(map),
+    //cloud: L.featureGroup().addTo(map),
+}
 
+// Layer control
+L.control.layers({
+    "OpenStreetMap": L.tileLayer.provider("OpenStreetMap.Mapnik").addTo(map),
+    "OpenTopoMap": L.tileLayer.provider("OpenTopoMap"),
+    "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
+}, {
+    "Temperature": overlays.temperature,
+    "Pressure": overlays.pressure,
+    //"Cloud fraction": overlays.cloud,
+}).addTo(map);
 
 
 // Maßstab
@@ -25,18 +40,22 @@ L.control.scale({
 }).addTo(map);
 
 
-async function getData(geojson) {
+// GeoJSON laden und Temperatur/Pressure-Features erzeugen
+async function loadGeoJSON(url) {
+    let response = await fetch(url);
+    let geojson = await response.json();
+
+    // Für jede Station Temperatur- und Pressure-Features erzeugen
     for (let i = 0; i < geojson.features.length; i++) {
         let lat = geojson.features[i].geometry.coordinates[1];
         let lng = geojson.features[i].geometry.coordinates[0];
         let name = geojson.features[i].properties?.Stationsname || "";
-        let url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
-        let response = await fetch(url);
-        let jsondata = await response.json();
-        //console.log(jsondata.properties.timeseries)
+        let apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
+        let apiResponse = await fetch(apiUrl);
+        let jsondata = await apiResponse.json();
 
-        //KI
-        // Erzeuge für jede Zeitstufe einen Punkt als Feature
+        // KI
+        // Features für diese Station erzeugen
         let features = jsondata.properties.timeseries.map(ts => ({
             type: "Feature",
             geometry: {
@@ -46,18 +65,24 @@ async function getData(geojson) {
             properties: {
                 time: ts.time,
                 temp: ts.data.instant.details.air_temperature,
+                pressure: ts.data.instant.details.air_pressure_at_sea_level,
                 name: name
             }
         }));
 
-        let timeGeoJson = {
-            type: "FeatureCollection",
-            features: features
-        };
+        // Die Features als neues Feld an die Station hängen
+        geojson.features[i].properties.timeseriesFeatures = features;
+        // KI
+    }
+    return geojson;
+}
 
-        //KI
-        
-        // TimeDimension-Layer für diese Station
+// Temperatur-Overlay erstellen
+async function addTemperatureOverlay(geojson) {
+    for (let i = 0; i < geojson.features.length; i++) {
+        let features = geojson.features[i].properties.timeseriesFeatures;
+        let timeGeoJson = { type: "FeatureCollection", features: features };
+
         let geoJsonLayer = L.geoJson(timeGeoJson, {
             pointToLayer: function (feature, latlng) {
                 return L.marker(latlng, {
@@ -77,22 +102,42 @@ async function getData(geojson) {
             duration: 'PT1H'
         });
 
-        timedLayer.addTo(map);
+        timedLayer.addTo(overlays.temperature);
     }
 }
 
-
-async function loadGeoJSON(url) {
-    let response = await fetch(url);
-    let geojson = await response.json();
-    // Schleife über alle Features
+// Pressure-Overlay erstellen
+async function addPressureOverlay(geojson) {
     for (let i = 0; i < geojson.features.length; i++) {
-        //console.log(`Index: ${i}`, geojson.features[i].geometry.coordinates[0]);
+        let features = geojson.features[i].properties.timeseriesFeatures;
+        let timeGeoJson = { type: "FeatureCollection", features: features };
+
+        let geoJsonLayer = L.geoJson(timeGeoJson, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        className: 'pressure-label',
+                        html: `<span style="background:rgba(230,230,255,0.8);padding:2px 4px;border-radius:4px;border:1px solid #336;font-size:12px;">${feature.properties.pressure} hPa</span>`,
+                        iconAnchor: [15, 15]
+                    })
+                });
+            }
+        });
+
+        let timedLayer = L.timeDimension.layer.geoJson(geoJsonLayer, {
+            updateTimeDimension: true,
+            updateTimeDimensionMode: 'replace',
+            addlastPoint: false,
+            duration: 'PT1H'
+        });
+
+        timedLayer.addTo(overlays.pressure);
     }
-    return geojson;
 }
 
+// Hauptfunktion
 (async () => {
-    let geojson = await loadGeoJSON("../stations.geojson");
-    await getData(geojson);
+    let geojson = await loadGeoJSON("stations.geojson");
+    await addTemperatureOverlay(geojson);
+    await addPressureOverlay(geojson);
 })();

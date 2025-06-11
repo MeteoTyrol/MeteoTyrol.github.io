@@ -7,13 +7,7 @@ let ibk = {
 // Karte initialisieren
 let map = L.map("map", {
     center: [ibk.lat, ibk.lng],
-    zoom: 7,
-    timeDimension: true,
-    timeDimensionControl: true,
-    timeDimensionOptions: {
-        timeInterval: "PT0H/PT24H", // Beispiel: 24 Stunden ab jetzt
-        period: "PT1H"              // 1-Stunden-Schritte
-    }
+    zoom: 7
 });
 // thematische Layer
 let overlays = {

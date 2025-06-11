@@ -4,7 +4,7 @@
 const ceiloData = {
   "type": "FeatureCollection",
   "features": [
-   {
+    {
       "type": "Feature",
       "id": 11130,
       "properties": {
@@ -49,7 +49,7 @@ const ceiloData = {
       "properties": {
         "name": "Innsbruck/City",
         "height_asl_m": 585,
-        "type": "CL31" 
+        "type": "CL31"
       },
       "geometry": {
         "type": "Point",
@@ -154,34 +154,34 @@ const ceiloData = {
 
 // Radiosondes
 async function loadCeilo(date) {
-    
-    let geojson = ceiloData;
-    
-    L.geoJSON(geojson, {
-        attribution: 'Datenquelle: <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> GeoSphere Austria </a>',
-        
-        pointToLayer: function (feature, latlng) {
-            //console.log(feature.properties)
-            
-            return L.marker(latlng,
-                {
-                    icon: L.icon({
-                        iconUrl: './photo.png',
-                        iconAnchor: [16, 37],
-                        popupAnchor: [0, -37],
-                    })
-                }
-            );
-        },
-        onEachFeature: function (feature, layer) {
-            let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
-            let id = feature.id;
-            // url for the visualization up to 3000m
-            let url= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_MLH.png`;
-            // url for full range (14km)
-            let url_full= `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
-           
-            layer.bindPopup(`
+
+  let geojson = ceiloData;
+
+  L.geoJSON(geojson, {
+    attribution: 'Ceilometer Data: <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> GeoSphere Austria </a>',
+
+    pointToLayer: function (feature, latlng) {
+      //console.log(feature.properties)
+
+      return L.marker(latlng,
+        {
+          icon: L.icon({
+            iconUrl: './photo.png',
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -37],
+          })
+        }
+      );
+    },
+    onEachFeature: function (feature, layer) {
+      let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
+      let id = feature.id;
+      // url for the visualization up to 3000m
+      let url = `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_MLH.png`;
+      // url for full range (14km)
+      let url_full = `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
+
+      layer.bindPopup(`
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
                 <ul>
@@ -191,7 +191,7 @@ async function loadCeilo(date) {
                 <ul>
                 <a href="${url_full}" target="ceilo">Full Range Plot</a>
             `);
-        }
-    }).addTo(overlays.ceilo);
+    }
+  }).addTo(overlays.ceilo);
 }
 

@@ -134,7 +134,7 @@ async function loadRadiosonde(date) {
   let geojson = rasoData;
 
   L.geoJSON(geojson, {
-    attribution: 'Datenquelle: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
+    attribution: 'Radiosonde Data: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
 
     pointToLayer: function (feature, latlng) {
       //console.log(feature.properties)
@@ -155,7 +155,7 @@ async function loadRadiosonde(date) {
       let id = feature.id;
       let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
       let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
-  
+
       //console.log(dateObject)
       layer.bindPopup(`
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>

@@ -14,12 +14,12 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 
 // Overlays definieren
 let overlays = {
-    raso: L.featureGroup().addTo(map),
+    raso: L.featureGroup(),
     lidar: L.featureGroup().addTo(map),
-    geosphere: L.featureGroup().addTo(map),
-    aws: L.featureGroup().addTo(map),
-    uibk: L.featureGroup().addTo(map),
-    ceilo: L.featureGroup().addTo(map),
+    geosphere: L.featureGroup(),
+    aws: L.featureGroup(),
+    uibk: L.featureGroup(),
+    ceilo: L.featureGroup(),
 };
 
 // Hintergrund-Layer
@@ -75,6 +75,7 @@ function loadAll(date_raw) {
     let dateObj = new Date(date_raw) //convert to Date object
     loadRadiosonde(dateObj);
     loadCeilo(dateObj);
+    loadLidar(dateObj)
 }
 
 

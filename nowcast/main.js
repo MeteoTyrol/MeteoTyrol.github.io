@@ -75,6 +75,7 @@ function loadAll(date_raw) {
     loadRadiosonde(dateObj);
     loadCeilo(dateObj);
     loadLidar(dateObj);
+    loadAWS();
 }
 
 

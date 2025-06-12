@@ -7,30 +7,70 @@ let ibk = {
 };
 
 // Karte initialisieren
-let map = L.map("map").setView([ibk.lat, ibk.lng], 5);
+let map = L.map("map").setView([ibk.lat, ibk.lng], 7);
+L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map);
 
-// thematische Layer
-let overlays = {
-    forecast: L.featureGroup().addTo(map),
-    wind: L.featureGroup().addTo(map),
-}
 
-// Layer Control
-let layerControl = L.control.layers({
-    "Openstreetmap": L.tileLayer.provider("OpenStreetMap.Mapnik"),
-    "Esri WorldTopoMap": L.tileLayer.provider("Esri.WorldTopoMap"),
-    "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery").addTo(map)
-}, {
-    "Wettervorhersage MET Norway": overlays.forecast,
-    "ECMWF Windvorhersage": overlays.wind,
-}).addTo(map);
 
 // Maßstab
 L.control.scale({
     imperial: false,
 }).addTo(map);
 
-let url = `https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/chem-v2-1h-9km`
-let response = await fetch(url);
-let jsondata = await response.json();
-console.log(jsondata);
+async function getData (geojson){
+    for (let i = 0; i < geojson.features.length; i++) {
+        let lat = geojson.features[i].geometry.coordinates[0]
+        let lng = geojson.features[i].geometry.coordinates[1]
+        let url = `https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/chem-v2-1h-3km?parameters=no2surf&lat_lon=${lat}%2C${lng}&forecast_offset=0&output_format=geojson`;
+        let response = await fetch(url);
+        let jsondata = await response.json();
+
+    }
+    console.log(jsondata);
+}
+
+//async function getData(latlngArray) {
+  //  for (let i = 0; i < latlngArray.length; i++) {
+    //    let coord = latlngArray[i];
+      //  let url = `https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/chem-v2-1h-3km?parameters=no2surf&lat_lon=${coord.lat}%2C${coord.lng}&forecast_offset=0&output_format=geojson`;
+       // let response = await fetch(url);
+       // let jsondata = await response.json();
+        //console.log(jsondata);
+   // }
+//}
+
+// KI
+// Hilfsfunktion: GeoJSON laden und Koordinaten extrahieren
+//async function getLatLngFromGeoJSON(path) {
+  //  let response = await fetch(path);
+   // let geojson = await response.json();
+    // Extrahiere alle Features mit Punkt-Geometrie
+   // let coords = geojson.features
+   //     .filter(f => f.geometry && f.geometry.type === "Point")
+    //    .map(f => ({
+      //      lat: f.geometry.coordinates[1],
+        //    lng: f.geometry.coordinates[0],
+          //  name: f.properties?.Stationsname || ""
+  //      }));
+  //  return coords;
+    
+//}
+// KI
+
+async function loadGeoJSON(url) {
+    let response = await fetch(url);
+    let geojson = await response.json();
+    // Schleife über alle Features
+    for (let i = 0; i < geojson.features.length; i++) {
+        //console.log(`Index: ${i}`, geojson.features[i].geometry.coordinates[0]);
+    }
+    return geojson;
+}
+
+(async () => {
+    let geojson = await loadGeoJSON("../stations.geojson");
+    await getData(geojson);
+})();
+
+
+

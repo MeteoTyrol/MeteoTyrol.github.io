@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vorhersage-Karten</title>
+    <title> Forecast </title>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Leaflet Providers -->
+    <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+    <!-- Leaflet Timedimension -->
+    <script src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
+    
+    <!-- eifene Stiele und Skript-->
     <link rel="stylesheet" href="../styles.css">
+    <script defer src="NO_daten.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
 </head>
+
 <body>
-    <a href="../index.html">Startseite</a>
-    <a href="../nowcast/index.html">aktuelle Messwerte</a>
+    <main>
+        <header>
+            <h2> Vorhersage Karten</h2>
+        </header>
+        <article>
+            <div id="map"></div>
+        </article>
+        <footer>
+            <a href="../index.html">Startseite</a>
+            <a href="../nowcast/index.html">aktuelle Messwerte</a>
+        </footer>
+    </main>
+
 </body>
+
 </html>

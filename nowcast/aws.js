@@ -45,7 +45,7 @@ async function loadAWS() {
         }
 
 
-    }).addTo(overlays.stations);
+    }).addTo(overlays.aws);
     
 
 

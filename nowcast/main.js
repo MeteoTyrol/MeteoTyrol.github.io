@@ -59,7 +59,6 @@ function getYYYYMMDD(date) {
 /* KI_END */
 
 // get the Date Object for today
-let today = Date()
 
 
 L.control.calendar({
@@ -75,7 +74,7 @@ function loadAll(date_raw) {
     let dateObj = new Date(date_raw) //convert to Date object
     loadRadiosonde(dateObj);
     loadCeilo(dateObj);
-    loadLidar(dateObj)
+    loadLidar(dateObj);
 }
 
 

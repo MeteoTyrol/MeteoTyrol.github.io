@@ -80,7 +80,7 @@ async function loadLidar(date) {
   let geojson = lidarData;
 
   L.geoJSON(geojson, {
-    attribution: 'Lidar Data: <a href= "https://ertel2.uibk.ac.at/lidar-uebersicht/"> UIBK </a> <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> Geosphere </a>',
+    attribution: 'Lidar Data: <a href= "https://ertel2.uibk.ac.at/lidar-uebersicht/"> UIBK</a>, <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> Geosphere </a>',
 
     pointToLayer: function (feature, latlng) {
       return L.marker(latlng,

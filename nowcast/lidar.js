@@ -101,16 +101,15 @@ async function loadLidar(date) {
       let time = feature.properties.launch_time;
       let id = feature.id;
       let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
-      let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
+      let url = feature.properties.url_template.replace('{YYYYMMDD}', YYYYMMDD)
+      let url_current = feature.properties.url_current
 
       //console.log(dateObject)
       layer.bindPopup(`
-                <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
+                <a href=${url} target="lidar"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
                 <ul>
-                    <li> Station ID: ${id}
                     <li> Date: ${date.toLocaleDateString()}
-                    <li> Time: ${time} UTC <!--Uhrzeiten werden in der Meteorologie Standardmäßig in UTC angegeben, desswegen machen wir es auch hier-->
                     <li> <a href="${url}" target="raso">Skew T Diagramm</a>
                 <ul> 
             `);

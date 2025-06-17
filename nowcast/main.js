@@ -7,8 +7,6 @@ let ibk = {
     zoom: 8,
 };
 
-
-
 // Karte initialisieren
 let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 

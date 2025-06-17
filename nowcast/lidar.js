@@ -138,17 +138,20 @@ async function loadLidar(date) {
       // Times in the past
       else {
         url = feature.properties.url_template.replace('{YYYYMMDD}', YYYYMMDD);
-        /* Begin KI, Kommentare selbst hinzugefügt und Popups selbst geschrieben*/
+        /*KI_BEGIN, Kommentare selbst hinzugefügt und Popups selbst geschrieben*/
         const img = new window.Image(); //initilaize Image
         // wenn das laden Funktioniert, lade den Popup mit Bild und Links
         img.onload = function () {
+          /*KI_END*/
           layer.bindPopup(`
             <div class="lidar-popup">
             <a href="${url}" target="lidar"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
             ` + Popuptext +
             `</div>`);
         };
+        /*KI_BEGIN*/
         img.onerror = function () {
+        /*KI_END*/
           // wenn das laden nicht funktioniert
           //Geosphere: nichts älteres als 3 Tage
           if (feature.properties.provider == "Geosphere Austria") {
@@ -168,9 +171,9 @@ async function loadLidar(date) {
             `</div>`);
           }
         };
-
+        /*KI_BEGIN*/
         img.src = url; //image source location
-        /*Ende KI*/
+        /*KI_END*/
       }
     }
   }).addTo(overlays.lidar);

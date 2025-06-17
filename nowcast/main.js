@@ -55,7 +55,7 @@ function getYYYYMMDD(date) {
     return `${yyyy}${mm}${dd}`;
 
 }
-/*KI_END*/
+    /*KI_END*/
 
 /*KI_BEGIN*/
 function getYYYY_MM_DD(date) {

@@ -155,16 +155,11 @@ const ceiloData = {
 
 // Radiosondes
 async function loadCeilo(date) {
-
-  let geojson = ceiloData;
-
-  L.geoJSON(geojson, {
+  L.geoJSON(ceiloData, {
     attribution: 'Ceilometer Data: <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> GeoSphere Austria </a>',
 
     pointToLayer: function (feature, latlng) {
-      //console.log(feature.properties)
-
-      return L.marker(latlng,
+        return L.marker(latlng,
         {
           icon: L.icon({
             iconUrl: './icons/cloud.png',
@@ -181,9 +176,8 @@ async function loadCeilo(date) {
       let url = `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_MLH.png`;
       // url for full range (14km)
       let url_full = `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
+      
       if (isWithinPast3Days(date)) {
-
-
         layer.bindPopup(`
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>

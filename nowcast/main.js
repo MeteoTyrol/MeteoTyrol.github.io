@@ -15,11 +15,11 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 // Overlays definieren
 let overlays = {
     raso: L.featureGroup(),
-    lidar: L.featureGroup().addTo(map),
+    lidar: L.featureGroup(),
     geosphere: L.featureGroup(),
     aws: L.featureGroup(),
     uibk: L.featureGroup(),
-    ceilo: L.featureGroup(),
+    ceilo: L.featureGroup().addTo(map),
 };
 
 // Hintergrund-Layer
@@ -57,8 +57,9 @@ function getYYYYMMDD(date) {
     return `${yyyy}${mm}${dd}`;
 
 }
-/* KI_END */
+/*KI_END*/
 
+/*KI_BEGIN*/
 function getYYYY_MM_DD(date) {
     // This function returns the date in YYYY-MM-DD format
     // date should be a Date() object
@@ -67,8 +68,23 @@ function getYYYY_MM_DD(date) {
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
 }
+/*KI_END*/
 
-// get the Date Object for today
+/*KI_BEGIN*/
+function isWithinPast3Days(date) {
+    const today = new Date();
+    // Remove time part for accurate day comparison
+    today.setHours(0, 0, 0, 0);
+
+    const givenDate = new Date(date);
+    givenDate.setHours(0, 0, 0, 0);
+
+    const diffTime = today - givenDate;
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    return diffDays >= 0 && diffDays <= 2;
+}
+/* KI_END */
 
 
 L.control.calendar({

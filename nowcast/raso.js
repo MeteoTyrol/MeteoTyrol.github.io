@@ -129,11 +129,11 @@ const rasoData = {
 
 let htmlURLtemplate = "https://weather.uwyo.edu/wsgi/sounding?datetime={YYYY-MM-DD}%20{UTC}:00:00&id={ID}&type=PNG:SKEWT&src=BUFR"
 
-// Radiosondes
-async function loadRadiosonde(date) {
-  let geojson = rasoData;
 
-  L.geoJSON(geojson, {
+
+async function loadRadiosonde(date) {
+
+  L.geoJSON(rasoData, {
     attribution: 'Radiosonde Data: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
 
     pointToLayer: function (feature, latlng) {
@@ -147,37 +147,41 @@ async function loadRadiosonde(date) {
         }
       );
     },
-    onEachFeature: function (feature, layer) {
 
+
+    onEachFeature: function (feature, layer) {
+      //define constants
       let time = feature.properties.launch_time;
       let id = feature.id;
       let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
       let YYYY_MM_DD = getYYYY_MM_DD(date); // convert to YYYY-MM-DD for htmlURL
       let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
       let htmlURL = htmlURLtemplate.replace('{YYYY-MM-DD}', YYYY_MM_DD).replace('{UTC}', time).replace('{ID}', id);
-
-      //console.log(feature.properties)
-
-
-      /* Begin KI, Kommentare selbst hinzugefügt und Popups selbst geschrieben*/
+      //predefine popup text to reuse it
+      let popupText = `
+        <h4>${feature.properties.name}</h4>
+          <ul>
+              <li> Station ID: ${id}
+              <li> Date: ${date.toLocaleDateString()}
+              <li> Time: ${time} UTC
+              <li> <a href=${htmlURL} target="raso">Raw Data and SkewT</a>
+          <ul>`
+    
+      /*KI_BEGIN, Kommentare selbst hinzugefügt und Popups selbst geschrieben*/
       const img = new window.Image(); //initilaize Image
       // wenn das laden Funktioniert, lade den Popup mit Bild und Links
       img.onload = function () {
-        //console.log(dateObject)
+        /*KI_END*/
+        
         layer.bindPopup(`
           <div class="raso-popup">
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
-                <h4>${feature.properties.name}</h4>
-                <ul>
-                    <li> Station ID: ${id}
-                    <li> Date: ${date.toLocaleDateString()}
-                    <li> Time: ${time} UTC <!--Uhrzeiten werden in der Meteorologie Standardmäßig in UTC angegeben, desswegen machen wir es auch hier-->
-                    <li> <a href=${htmlURL} target="raso">Raw Data and SkewT</a>
-                <ul> 
+                ${popupText}
           </div>
             `);
 
       };
+      // Wenn laden nicht funktioniert (PNG noch nicht verfügbar) anderes Bild und anderer Link
       img.onerror = function () {
 
         layer.bindPopup(`
@@ -185,18 +189,13 @@ async function loadRadiosonde(date) {
                 <a href=${htmlURL} target="raso"><img src="./icons/raso.jpg" alt="*" style="max-width: 250px; height: auto;"></a><br>
                 <small>Source: <a href="https://commons.wikimedia.org/wiki/File:Photo_Ciampino._Launching_a_radiosonde_for_meteorological_measurements_1959_-_Touring_Club_Italiano_07_0481.jpg">Wikimedia </a></small><br>
                 Generating the SkewT Diagramm can take up to a minute!
-                <h4>${feature.properties.name}</h4>
-                <ul>
-                    <li> Station ID: ${id}
-                    <li> Date: ${date.toLocaleDateString()}
-                    <li> Time: ${time} UTC <!--Uhrzeiten werden in der Meteorologie Standardmäßig in UTC angegeben, desswegen machen wir es auch hier-->
-                    <li> <a href=${htmlURL} target="raso">Raw Data and SkewT</a>
-                <ul> </div>
+                ${popupText}
+                 </div>
             `);
       };
+      /*KI_BEGIN*/
       img.src = url; //image source location
-      /*KI*/
-
+      /*KI_ENG*/
 
     }
   }).addTo(overlays.raso);

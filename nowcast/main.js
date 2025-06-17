@@ -73,7 +73,8 @@ function getYYYY_MM_DD(date) {
 
 L.control.calendar({
     id: 1,
-    minDate: "2024-01-01",
+    minDate: "2020-01-01",
+    maxDate: getYYYY_MM_DD(new Date()), //max day is today
     onSelectDate: (value) => loadAll(value),
     triggerFunctionOnLoad: true,
 

@@ -182,7 +182,7 @@ async function loadRadiosonde(date) {
 
         layer.bindPopup(`
           <div class="raso-popup">
-                <a href=${htmlURL} target="raso"><img src="./icons/raso.jpg" alt="*" style="max-width: 200px; height: auto;"></a><br>
+                <a href=${htmlURL} target="raso"><img src="./icons/raso.jpg" alt="*" style="max-width: 250px; height: auto;"></a><br>
                 <small>Source: <a href="https://commons.wikimedia.org/wiki/File:Photo_Ciampino._Launching_a_radiosonde_for_meteorological_measurements_1959_-_Touring_Club_Italiano_07_0481.jpg">Wikimedia </a></small>
                 <h4>${feature.properties.name}</h4>
                 Generating the SkewT Diagramm can take up to a minute!

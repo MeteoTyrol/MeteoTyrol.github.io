@@ -152,8 +152,9 @@ async function loadRadiosonde(date) {
       let time = feature.properties.launch_time;
       let id = feature.id;
       let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
+      let YYYY_MM_DD = getYYYY_MM_DD(date); // convert to YYYY-MM-DD for htmlURL
       let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
-
+      let htmlURL = htmlURLtemplate.replace('{YYYY-MM-DD}', YYYY_MM_DD).replace('{UTC}', time).replace('{ID}', id);
 
       //console.log(feature.properties)
 
@@ -171,28 +172,27 @@ async function loadRadiosonde(date) {
                     <li> Station ID: ${id}
                     <li> Date: ${date.toLocaleDateString()}
                     <li> Time: ${time} UTC <!--Uhrzeiten werden in der Meteorologie Standardmäßig in UTC angegeben, desswegen machen wir es auch hier-->
+                    <li> <a href=${htmlURL} target="raso">Raw Data and SkewT</a>
                 <ul> 
           </div>
             `);
 
       };
       img.onerror = function () {
-        let YYYY_MM_DD = getYYYY_MM_DD(date);
-        let htmlURL = htmlURLtemplate.replace('{YYYY-MM-DD}', YYYY_MM_DD).replace('{UTC}', time).replace('{ID}', id);
 
         layer.bindPopup(`
           <div class="raso-popup">
                 <a href=${htmlURL} target="raso"><img src="./icons/raso.jpg" alt="*" style="max-width: 250px; height: auto;"></a><br>
-                <small>Source: <a href="https://commons.wikimedia.org/wiki/File:Photo_Ciampino._Launching_a_radiosonde_for_meteorological_measurements_1959_-_Touring_Club_Italiano_07_0481.jpg">Wikimedia </a></small>
-                <h4>${feature.properties.name}</h4>
+                <small>Source: <a href="https://commons.wikimedia.org/wiki/File:Photo_Ciampino._Launching_a_radiosonde_for_meteorological_measurements_1959_-_Touring_Club_Italiano_07_0481.jpg">Wikimedia </a></small><br>
                 Generating the SkewT Diagramm can take up to a minute!
+                <h4>${feature.properties.name}</h4>
                 <ul>
                     <li> Station ID: ${id}
                     <li> Date: ${date.toLocaleDateString()}
                     <li> Time: ${time} UTC <!--Uhrzeiten werden in der Meteorologie Standardmäßig in UTC angegeben, desswegen machen wir es auch hier-->
+                    <li> <a href=${htmlURL} target="raso">Raw Data and SkewT</a>
                 <ul> </div>
             `);
-
       };
       img.src = url; //image source location
       /*KI*/

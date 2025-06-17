@@ -140,7 +140,7 @@ async function loadRadiosonde(date) {
       return L.marker(latlng,
         {
           icon: L.icon({
-            iconUrl: './icons/photo.png',
+            iconUrl: './icons/radio.png',
             iconAnchor: [16, 37],
             popupAnchor: [0, -37],
           })

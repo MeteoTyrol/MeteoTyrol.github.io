@@ -11,7 +11,7 @@ async function loadAWS() {
         attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
         pointToLayer: function (feature, latlng) {
             //console.log(feature.properties);
-            let iconName = 'wifi.png';
+            let iconName = 'anemometer_AWS.png';
 
             return L.marker(latlng, {
                 icon: L.icon({

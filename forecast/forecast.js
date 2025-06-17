@@ -21,7 +21,7 @@ async function getData (geojson){
     for (let i = 0; i < geojson.features.length; i++) {
         let lat = geojson.features[i].geometry.coordinates[0]
         let lng = geojson.features[i].geometry.coordinates[1]
-        let url = `https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/chem-v2-1h-3km?parameters=no2surf&lat_lon=${lat}%2C${lng}&forecast_offset=0&output_format=geojson`;
+        let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v1-1h-4km?parameters=no2_surf&bbox=45.45%2C9.05%2C49.50%2C17.10&forecast_offset=0&output_format=geojson`;
         let response = await fetch(url);
         let jsondata = await response.json();
 

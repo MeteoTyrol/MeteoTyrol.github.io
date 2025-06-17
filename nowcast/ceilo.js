@@ -111,11 +111,11 @@ const ceiloData = {
     },
     {
       "type": "Feature",
-      "id": "W3310584",
+      "id": "11344",
       "properties": {
         "name": "CL61 Kom Saigurn",
         "height_asl_m": 1626,
-        "type": "CL61"
+        "type": "CL51"
       },
       "geometry": {
         "type": "Point",

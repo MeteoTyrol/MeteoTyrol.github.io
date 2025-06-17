@@ -105,8 +105,8 @@ async function loadLidar(date) {
         if (feature.properties.provider == "Geosphere Austria") {
           url += feature.properties.url_template.replace("{YYYYMMDD}", YYYYMMDD);
         }
-        else {url += feature.properties.url_current;}
-        
+        else { url += feature.properties.url_current; }
+
         //crate Popup
         layer.bindPopup(`
                 <a href=${url} target="lidar"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
@@ -127,12 +127,14 @@ async function loadLidar(date) {
         // wenn das laden Funktioniert, lade den Popup mit Bild und Links
         img.onload = function () {
           layer.bindPopup(`
+            <div class="lidar-popup">
             <a href="${url}" target="lidar"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
             <h4>${feature.properties.name}, <a href = "${feature.properties.provider_url}">${feature.properties.provider}</a></h4>
             <ul>
               <li>Date: ${date.toLocaleDateString()}</li>
               <li><a href="${url}" target="lidar">Open Plot</a></li>
             </ul>
+            </div>
           `);
         };
         img.onerror = function () {
@@ -147,14 +149,15 @@ async function loadLidar(date) {
           }
           // UIBK: Brauche VPN für vergangene plots, mache einen Popup mit Info zum VPN für UIBK
           else {
-          layer.bindPopup(`
+            layer.bindPopup(`
             <h4>${feature.properties.name}, <a href = "${feature.properties.provider_url}">${feature.properties.provider}</a></h4>
             <p><b>Image not available</b> <br>
             Plots for past lidar measuremnts from UIBK require a VPN connection to <a href = "https://www.uibk.ac.at/zid/anleitungen/vpn/vpn.html.de">University of Innsbruck</a>
             </p>
           `);
-        }};
-    
+          }
+        };
+
         img.src = url; //image source location
         /*Ende KI*/
       }

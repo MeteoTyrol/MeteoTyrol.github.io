@@ -26,7 +26,7 @@ const lidarData = {
         "name": "Nafingalm, WR21",
         "provider": "ACINN UIBK",
         "provider_url": "https://www.uibk.ac.at/en/acinn/",
-        "url_template_current": "https://ertel2.uibk.ac.at/ertel/wr21_lidar_current.png",
+        "url_current": "https://ertel2.uibk.ac.at/ertel/wr21_lidar_current.png",
         "url_template": "https://acinn-ertel.uibk.ac.at/ertel/data/wr21_visu/{YYYYMMDD}.png",
         "height_asl_m": 1928,
         "type": "WindRanger 21",
@@ -100,8 +100,14 @@ async function loadLidar(date) {
       let YYYYMMDDtoday = getYYYYMMDD(today) // need to convert too to cut the time for comparison
       let url = "";
 
+      //For today, need other URL for UIKB stations
       if (YYYYMMDD == YYYYMMDDtoday) {
-        url += feature.properties.url_current;
+        if (feature.properties.provider == "Geosphere Austria") {
+          url += feature.properties.url_template.replace("{YYYYMMDD}", YYYYMMDD);
+        }
+        else {url += feature.properties.url_current;}
+        
+        //crate Popup
         layer.bindPopup(`
                 <a href=${url} target="lidar"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}, <a href = "${feature.properties.provider_url}">${feature.properties.provider}</a></h4>

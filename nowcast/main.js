@@ -14,8 +14,8 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 
 // Overlays definieren
 let overlays = {
-    raso: L.featureGroup().addTo(map),
-    lidar: L.featureGroup(),
+    raso: L.featureGroup(),
+    lidar: L.featureGroup().addTo(map),
     geosphere: L.featureGroup(),
     aws: L.featureGroup(),
     uibk: L.featureGroup(),

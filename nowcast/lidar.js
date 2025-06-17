@@ -119,7 +119,7 @@ async function loadLidar(date) {
       }
 
 
-
+      // Times in the past
       else {
         url = feature.properties.url_template.replace('{YYYYMMDD}', YYYYMMDD);
         /* Begin KI, Kommentare selbst hinzugefügt und Popups selbst geschrieben*/
@@ -136,14 +136,25 @@ async function loadLidar(date) {
           `);
         };
         img.onerror = function () {
-          // wenn das laden nicht funktioniert, mache einen Popup mit Info zum VPN
+          // wenn das laden nicht funktioniert
+          //Geosphere: nichts älteres als 3 Tage
+          if (feature.properties.provider == "Geosphere Austria") {
+            layer.bindPopup(`
+            <h4>${feature.properties.name}, <a href = "${feature.properties.provider_url}">${feature.properties.provider}</a></h4>
+            <p><b>Image not available</b> <br>
+            Geosphere Austria only provides Lidar data for the past three days.</p>
+          `);
+          }
+          // UIBK: Brauche VPN für vergangene plots, mache einen Popup mit Info zum VPN für UIBK
+          else {
           layer.bindPopup(`
             <h4>${feature.properties.name}, <a href = "${feature.properties.provider_url}">${feature.properties.provider}</a></h4>
             <p><b>Image not available</b> <br>
-            Plots for past lidar measuremnts require a VPN connection to <a href = "https://www.uibk.ac.at/zid/anleitungen/vpn/vpn.html.de">University of Innsbruck</a>
+            Plots for past lidar measuremnts from UIBK require a VPN connection to <a href = "https://www.uibk.ac.at/zid/anleitungen/vpn/vpn.html.de">University of Innsbruck</a>
             </p>
           `);
-        };
+        }};
+    
         img.src = url; //image source location
         /*Ende KI*/
       }

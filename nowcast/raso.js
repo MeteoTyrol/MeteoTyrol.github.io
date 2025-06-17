@@ -78,7 +78,7 @@ const rasoData = {
     },
     {
       "type": "Feature",
-      "id": 06610,
+      "id": "06610",
       "properties": {
         "name": "PAYERN, Switzerland",
         "launch_time": "00"
@@ -127,19 +127,16 @@ const rasoData = {
   ]
 };
 
+let htmlURLtemplate = "https://weather.uwyo.edu/wsgi/sounding?datetime={YYYY-MM-DD}%20{UTC}:00:00&id={ID}&type=PNG:SKEWT&src=BUFR"
 
 // Radiosondes
 async function loadRadiosonde(date) {
-
   let geojson = rasoData;
 
   L.geoJSON(geojson, {
     attribution: 'Radiosonde Data: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
 
     pointToLayer: function (feature, latlng) {
-      //console.log(feature.properties)
-
-
       return L.marker(latlng,
         {
           icon: L.icon({
@@ -151,13 +148,22 @@ async function loadRadiosonde(date) {
       );
     },
     onEachFeature: function (feature, layer) {
+
       let time = feature.properties.launch_time;
       let id = feature.id;
       let YYYYMMDD = getYYYYMMDD(date) // convert to YYYYMMDD format because need it in url
       let url = `https://weather.uwyo.edu/upperair/imgs/${YYYYMMDD}${time}.${id}.skewt.png`;
 
-      //console.log(dateObject)
-      layer.bindPopup(`
+
+      //console.log(feature.properties)
+
+
+      /* Begin KI, Kommentare selbst hinzugefügt und Popups selbst geschrieben*/
+      const img = new window.Image(); //initilaize Image
+      // wenn das laden Funktioniert, lade den Popup mit Bild und Links
+      img.onload = function () {
+        //console.log(dateObject)
+        layer.bindPopup(`
                 <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
                 <ul>
@@ -167,6 +173,26 @@ async function loadRadiosonde(date) {
                     <li> <a href="${url}" target="raso">Skew T Diagramm</a>
                 <ul> 
             `);
+
+      };
+      img.onerror = function () {
+        let YYYY_MM_DD = getYYYY_MM_DD(date);
+        let htmlURL = htmlURLtemplate.replace('{YYYY-MM-DD}', YYYY_MM_DD).replace('{UTC}', time).replace('{ID}', id);
+
+        layer.bindPopup(`
+                <a href=${url} target="raso"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
+                <h4>${feature.properties.name}</h4>
+                <ul>
+                    <li> NO PNG AVailiable!!!
+                    <li> <a href="${htmlURL}" target= "raso"> Go to PNG </a>
+                <ul> 
+            `);
+
+      };
+      img.src = url; //image source location
+      /*KI*/
+
+
     }
   }).addTo(overlays.raso);
 }

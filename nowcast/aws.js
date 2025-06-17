@@ -4,7 +4,7 @@ async function loadAWS() {
     let url = "https://static.avalanche.report/weather_stations/stations.geojson"
     let response = await fetch(url); // await -> warte erst bis die Daten da sind
     let jsondata = await response.json(); //dann die Daten in json umwandeln
-    
+
 
     // Wetterstationen mit Icons und Popups
     L.geoJSON(jsondata, {
@@ -26,8 +26,8 @@ async function loadAWS() {
         onEachFeature: function (feature, layer) {
             //console.log(feature);
             let pointInTime = new Date(feature.properties.date); //new date macht aus dem String ein Date-Objekt
-            console.log(feature.properties.date)
-            console.log(pointInTime);
+            //console.log(feature.properties.date)
+            //console.log(pointInTime);
             layer.bindPopup(`
                 <h4>${feature.properties.name} (${feature.geometry.coordinates[2]}m)</h4>
                     <ul>
@@ -46,7 +46,5 @@ async function loadAWS() {
 
 
     }).addTo(overlays.aws);
-    
-
 
 }

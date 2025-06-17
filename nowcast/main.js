@@ -14,8 +14,8 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 
 // Overlays definieren
 let overlays = {
-    raso: L.featureGroup(),
-    lidar: L.featureGroup().addTo(map),
+    raso: L.featureGroup().addTo(map),
+    lidar: L.featureGroup(),
     geosphere: L.featureGroup(),
     aws: L.featureGroup(),
     uibk: L.featureGroup(),
@@ -55,8 +55,18 @@ function getYYYYMMDD(date) {
     const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}${mm}${dd}`;
+
 }
 /* KI_END */
+
+function getYYYY_MM_DD(date) {
+    // This function returns the date in YYYY-MM-DD format
+    // date should be a Date() object
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
 
 // get the Date Object for today
 

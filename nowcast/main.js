@@ -15,7 +15,7 @@ let overlays = {
     raso: L.featureGroup().addTo(map),
     lidar: L.featureGroup().addTo(map),
     geosphere: L.featureGroup(),
-    aws: L.featureGroup(),
+    aws: L.featureGroup().addTo(map),
     uibk: L.featureGroup(),
     ceilo: L.featureGroup().addTo(map),
 };
@@ -101,6 +101,7 @@ function loadAll(date_raw) {
     loadCeilo(dateObj);
     loadLidar(dateObj);
     loadAWS();
+    //loadGeosphere();
 }
 
 

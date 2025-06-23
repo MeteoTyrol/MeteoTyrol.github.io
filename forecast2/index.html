@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Forecast</title>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Leaflet Providers -->
+    <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--Leaflet minimap-->
+    <script src=" https://cdn.jsdelivr.net/npm/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css " rel="stylesheet">
+
+    <!--Leaflet fullscreen-->
+    <script src=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/Leaflet.fullscreen.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/leaflet.fullscreen.min.css " rel="stylesheet">
+
+
+
+    <!-- Leaflet Timedimension 
+    <script src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
+-->
+
+    <!-- jQuery (Pflicht für LeafletSlider) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- LeafletSlider CSS & JS  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-slider@1.0.2/leaflet.slider.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-slider@1.0.2/leaflet.slider.js"></script>
+
+
+    <!--Leaflet calendar
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/antoniovlx/leaflet-calendar@master/css/leaflet-calendar.css" />
+    <script src=" https://cdn.jsdelivr.net/npm/leaflet-calendar@1.1.4/js/leaflet-calendar.min.js "></script>
+    -->
+
+    <!-- Leaflet Timeline Control
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.timeline.control@1.0.2/dist/leaflet-timeline-control.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.timeline.control@1.0.2/dist/leaflet-timeline-control.min.js"></script>
+ -->
+
+    <!-- Leaflet Datepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-datepicker@1.0.2/dist/leaflet-datepicker.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-datepicker@1.0.2/dist/leaflet-datepicker.min.js"></script>
+
+    <!-- eigene Stiele und Skript-->
+    
+    <link rel="stylesheet" href="../styleKartenseiten.css">
+    <script defer src="NO_daten.js"></script>
+
+</head>
+
+<body>
+    <main>
+        <h2><i class="fa-regular fa-map"></i> Forecast Map </h2>
+            <nav>
+                <i class="fab fa-github"></i>
+                <a href="https://github.com/MeteorologyIBK/">Github</a>
+            </nav>
+        <article>
+            <div id="map"></div>
+            <div id="no2-controls">
+                <button id="no2-left"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="layer-label">NO₂</span>
+                <button id="no2-right"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </article>
+        <footer>
+            <strong>Data Sources:
+                <!--<a href="https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a> -->
+            </strong>
+            <a href="../index.html">Startseite</a>
+            <a href="../nowcast/index.html">aktuelle Messwerte</a>
+        </footer>
+    </main>
+
+</body>
+
+</html>

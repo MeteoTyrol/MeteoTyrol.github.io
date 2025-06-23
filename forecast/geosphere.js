@@ -4,8 +4,14 @@ let ibk = {
     lng: 11.392778
 };
 
+// zentral ist zirka Mayerhofen
+let center = {
+    lat: 47.097778,
+    lng: 11.703722
+};
+
 // Karte initialisieren
-let map = L.map("map").setView([ibk.lat, ibk.lng], 7);
+let map = L.map("map").setView([center.lat, center.lng], 9);
 
 // thematische Layer
 let overlays = {

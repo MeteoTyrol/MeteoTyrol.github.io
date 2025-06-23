@@ -37,17 +37,47 @@ L.control.scale({
     imperial: false,
 }).addTo(map);
 
-
-// GeoJSON laden
-async function loadGeoJSON(url) {
-    let response = await fetch(url);
-    return await response.json();
+// Temperatur-Layer
+async function showTemp(jsondata) {
+    L.geoJSON(jsondata, {
+        pointToLayer: function (feature, latlng) {
+            let temp = feature.properties.parameters.tl_mittel.data;
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    html: `<span>${temp}°C</span>`,
+                    iconAnchor: [15, 15]
+                })
+            });
+        },
+    }).addTo(overlays.temperature);
 }
 
-// Hauptfunktion
-(async () => {
-    let geojson = await loadGeoJSON("Jahressatz.json");
-    console.log(geojson.features);;
-})(); 
+// Pressure-Layer
+function showPres(jsondata) {
+    L.geoJSON(jsondata, {
+        pointToLayer: function (feature, latlng) {
+            let pressure = feature.properties.parameters.p.data;
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    html: `<span>${pressure}°C</span>`,
+                    iconAnchor: [15, 15]
+                })
+            });
+        },
+    }).addTo(overlays.pressure);
+}
+
+
+// GeoJSON asynchron laden
+async function loadGeoJSON(url) {
+    let response = await fetch(url);
+    let geojson = await response.json();
+    //console.log(geojson);
+    showTemp(geojson);
+    showPres(geojson);
+    showPressureAtEachPoint(geojson);
+}
+loadGeoJSON("Jahressatz.json");
+
 
 

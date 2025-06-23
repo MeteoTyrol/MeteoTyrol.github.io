@@ -210,6 +210,7 @@ var miniMap = new L.Control.MiniMap(osm2, {
 //fullScreen 
 map.addControl(new L.Control.Fullscreen());
 
+
 // Hauptfunktion
 (async () => {
     await getDataNO2();

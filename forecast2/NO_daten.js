@@ -13,7 +13,7 @@ let map = L.map("map", {
 // thematische Layer
 let overlays = {
     temperature: L.featureGroup().addTo(map),
-    pressure: L.featureGroup().addTo(map),
+    pressure: L.featureGroup(),
 };
 
 // Layer control

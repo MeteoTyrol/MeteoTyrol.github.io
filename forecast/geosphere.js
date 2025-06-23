@@ -22,7 +22,8 @@ let overlays = {
 
 // Layer Control
 let layerControl = L.control.layers({
-    "Openstreetmap": L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map)
+    "Openstreetmap": L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map),
+    "BasemapAT Grau": L.tileLayer.provider('BasemapAT.grau'),
 }, {
     "NO2": overlays.NO2,
     "Ozone": overlays.O3,
@@ -41,7 +42,7 @@ async function getDataNO2() {
     let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v2-1h-9km?parameters=no2surf&bbox=46.51%2C10.14%2C47.64%2C13.17&forecast_offset=0&output_format=geojson`;
     let response = await fetch(url);
     let jsondatano2 = await response.json();
-    //console.log(jsondatano2.features.properties)
+    //console.log(jsondatano2)
     showNO2(jsondatano2);
 }
 
@@ -58,7 +59,7 @@ async function getDataPM10() {
     let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v2-1h-9km?parameters=pm10surf&bbox=46.51%2C10.14%2C47.64%2C13.17&forecast_offset=0&output_format=geojson`;
     let response = await fetch(url);
     let jsondatapm10 = await response.json();
-    //console.log(jsondatapm10);
+    console.log(jsondatapm10);
     showPM10(jsondatapm10);
 }
 
@@ -68,9 +69,14 @@ let currentPM10Index = 0;
 
 function showNO2(jsondatano2) {
     let times = jsondatano2.timestamps;
-    if (!times) {
-        console.error("Keine Zeitachse gefunden!");
-        return;
+
+    function getNO2Color(value) {
+        if (value < 40) return "#00CD00";
+        if (value < 100) return "#ffff00";
+        if (value < 150) return "#ff7e00";
+        if (value < 200) return "#ff0000";
+        if (value < 400) return "#8f3f97";
+        return "#7e0023";
     }
 
     function updateNO2Layer() {
@@ -80,7 +86,7 @@ function showNO2(jsondatano2) {
                 let value = feature.properties.parameters.no2surf.data[currentNO2Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:rgba(255,255,255,0.9);padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${value}</span>`,
+                        html: `<span style="background:${getNO2Color(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -108,9 +114,13 @@ function showNO2(jsondatano2) {
 
 function showO3(jsondatao3) {
     let times = jsondatao3.timestamps;
-    if (!times) {
-        console.error("Keine Zeitachse gefunden!");
-        return;
+    function getO3Color(value) {
+        if (value < 60) return "#00CD00";
+        if (value < 120) return "#ffff00";
+        if (value < 180) return "#ff7e00";
+        if (value < 240) return "#ff0000";
+        if (value < 300) return "#8f3f97";
+        return "#7e0023";
     }
 
     function updateO3Layer() {
@@ -120,7 +130,7 @@ function showO3(jsondatao3) {
                 let value = feature.properties.parameters.o3surf.data[currentO3Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:rgba(230,255,255,0.9);padding:2px 6px;border-radius:4px;border:1px solid #88c;font-size:12px;">${value}</span>`,
+                        html: `<span style="background:${getO3Color(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #88c;font-size:12px;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -148,6 +158,15 @@ function showO3(jsondatao3) {
 function showPM10(jsondatapm10) {
     let times = jsondatapm10.timestamps;
 
+    function getPMColor(value) {
+        if (value < 20) return "#00CD00";
+        if (value < 35) return "#ffff00";
+        if (value < 50) return "#ff7e00";
+        if (value < 100) return "#ff0000";
+        if (value < 150) return "#8f3f97";
+        return "#7e0023";
+    }
+
     function updatePM10Layer() {
         overlays.PM10.clearLayers();
         L.geoJson(jsondatapm10, {
@@ -155,7 +174,7 @@ function showPM10(jsondatapm10) {
                 let value = feature.properties.parameters.pm10surf.data[currentPM10Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:rgba(255,240,200,0.9);padding:2px 6px;border-radius:4px;border:1px solid #cc8;font-size:12px;">${value}</span>`,
+                        html: `<span style="background:${getPMColor(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #cc8;font-size:12px;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Forecast </title>
+    <title> Forecast Air Quality</title>
 
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -56,15 +56,17 @@
     <!-- eigene Stiele und Skript-->
     
     <link rel="stylesheet" href="style.css">
-    <script defer src="geosphere.js"></script>
+    <script defer src="NO_daten.js"></script>
 
 </head>
 
 <body>
     <main>
-        <header>
-            <h2> Forecast Map Air Quality <i class="fa-solid fa-cloud"></i></h2>
-        </header>
+        <h2><i class="fa-regular fa-map"></i> Forecast Map Air Quality</h2>
+            <nav>
+                <i class="fab fa-github"></i>
+                <a href="https://github.com/MeteorologyIBK/">Github</a>
+            </nav>
         <article>
             <div id="map"></div>
             <div id="no2-controls">
@@ -87,6 +89,9 @@
             </div>
         </article>
         <footer>
+            <strong>Data Sources:
+                <!--<a href="https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a> -->
+            </strong>
             <a href="../index.html">Startseite</a>
             <a href="../nowcast/index.html">aktuelle Messwerte</a>
         </footer>

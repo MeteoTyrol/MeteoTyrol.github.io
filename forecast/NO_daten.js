@@ -19,7 +19,6 @@ let overlays = {
 // Layer control
 L.control.layers({
     "OpenStreetMap": L.tileLayer.provider("OpenStreetMap.Mapnik").addTo(map),
-    "OpenTopoMap": L.tileLayer.provider("OpenTopoMap"),
     "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
 }, {
     "Temperature": overlays.temperature,
@@ -47,7 +46,7 @@ async function addTemperatureLayer(geojson) {
         let apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
         let apiResponse = await fetch(apiUrl);
         let jsondata = await apiResponse.json();
-        console.log(jsondata);
+        //console.log(jsondata);
         if (!jsondata.properties?.timeseries) continue;
         // Nur den ersten Zeitpunkt anzeigen
         let currentIndex = 0;
@@ -61,16 +60,8 @@ async function addTemperatureLayer(geojson) {
                 name: name
             }
         });
-        document.getElementById('prev').onclick = () => {
-  currentIndex = (currentIndex - 1 + locations.length) % locations.length;
-  updateMarker();
 };
 
-document.getElementById('next').onclick = () => {
-  currentIndex = (currentIndex + 1) % locations.length;
-  updateMarker();
-};
-    }
     let tempGeoJson = { type: "FeatureCollection", features: allFeatures };
 
     let tempLayer = L.geoJson(tempGeoJson, {

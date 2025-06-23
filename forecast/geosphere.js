@@ -8,7 +8,7 @@ let ibk = {
 let map = L.map("map").setView([ibk.lat, ibk.lng], 7);
 
 // thematische Layer
-let overlays ={
+let overlays = {
     NO2: L.featureGroup().addTo(map),
     O3: L.featureGroup(),
     PM10: L.featureGroup()
@@ -17,7 +17,7 @@ let overlays ={
 // Layer Control
 let layerControl = L.control.layers({
     "Openstreetmap": L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map)
-},{
+}, {
     "NO2": overlays.NO2,
     "Ozone": overlays.O3,
     "PM 10": overlays.PM10
@@ -30,6 +30,31 @@ let layerControl = L.control.layers({
 L.control.scale({
     imperial: false,
 }).addTo(map);
+
+async function getDataNO2() {
+    let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v2-1h-9km?parameters=no2surf&bbox=46.51%2C10.14%2C47.64%2C13.17&forecast_offset=0&output_format=geojson`;
+    let response = await fetch(url);
+    let jsondatano2 = await response.json();
+    //console.log(jsondatano2.features.properties)
+    showNO2(jsondatano2);
+}
+
+async function getDataO3() {
+    let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v2-1h-9km?parameters=o3surf&bbox=46.51%2C10.14%2C47.64%2C13.17&forecast_offset=0&output_format=geojson`;
+    let response = await fetch(url);
+    let jsondatao3 = await response.json();
+    //console.log(jsondatao3);
+    showO3(jsondatao3);
+
+}
+
+async function getDataPM10() {
+    let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v2-1h-9km?parameters=pm10surf&bbox=46.51%2C10.14%2C47.64%2C13.17&forecast_offset=0&output_format=geojson`;
+    let response = await fetch(url);
+    let jsondatapm10 = await response.json();
+    //console.log(jsondatapm10);
+    showPM10(jsondatapm10);
+}
 
 let currentNO2Index = 0;
 let currentO3Index = 0;
@@ -61,11 +86,11 @@ function showNO2(jsondatano2) {
     const leftBtn = document.getElementById('no2-left');
     const rightBtn = document.getElementById('no2-right');
     if (leftBtn && rightBtn) {
-        leftBtn.onclick = function() {
+        leftBtn.onclick = function () {
             currentNO2Index = (currentNO2Index - 1 + times.length) % times.length;
             updateNO2Layer();
         };
-        rightBtn.onclick = function() {
+        rightBtn.onclick = function () {
             currentNO2Index = (currentNO2Index + 1) % times.length;
             updateNO2Layer();
         };
@@ -101,11 +126,11 @@ function showO3(jsondatao3) {
     const leftBtn = document.getElementById('o3-left');
     const rightBtn = document.getElementById('o3-right');
     if (leftBtn && rightBtn) {
-        leftBtn.onclick = function() {
+        leftBtn.onclick = function () {
             currentO3Index = (currentO3Index - 1 + times.length) % times.length;
             updateO3Layer();
         };
-        rightBtn.onclick = function() {
+        rightBtn.onclick = function () {
             currentO3Index = (currentO3Index + 1) % times.length;
             updateO3Layer();
         };
@@ -136,11 +161,11 @@ function showPM10(jsondatapm10) {
     const leftBtn = document.getElementById('pm10-left');
     const rightBtn = document.getElementById('pm10-right');
     if (leftBtn && rightBtn) {
-        leftBtn.onclick = function() {
+        leftBtn.onclick = function () {
             currentPM10Index = (currentPM10Index - 1 + times.length) % times.length;
             updatePM10Layer();
         };
-        rightBtn.onclick = function() {
+        rightBtn.onclick = function () {
             currentPM10Index = (currentPM10Index + 1) % times.length;
             updatePM10Layer();
         };
@@ -148,11 +173,12 @@ function showPM10(jsondatapm10) {
 
     updatePM10Layer();
 }
-    
+
+
 // minimap plugin mit Grundkarte Tirol Sommer als Layer
 var osm2 = new L.TileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png");
-var miniMap = new L.Control.MiniMap(osm2,{
-    toggleDisplay:true,
+var miniMap = new L.Control.MiniMap(osm2, {
+    toggleDisplay: true,
     minimized: false,
 }).addTo(map);
 

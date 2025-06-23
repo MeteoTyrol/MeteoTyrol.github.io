@@ -13,6 +13,9 @@
     <!-- Leaflet Providers -->
     <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!--Leaflet minimap-->
     <script src=" https://cdn.jsdelivr.net/npm/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js "></script>
     <link href=" https://cdn.jsdelivr.net/npm/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css " rel="stylesheet">
@@ -60,23 +63,28 @@
 <body>
     <main>
         <header>
-            <h2> Vorhersage Karten</h2>
+            <h2> Forecast Map Air Quality <i class="fa-solid fa-cloud"></i></h2>
         </header>
         <article>
             <div id="map"></div>
             <div id="no2-controls">
-                <button id="no2-left">NO₂ ⬅</button>
-                <button id="no2-right">NO₂ ➡</button>
+                <button id="no2-left"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="layer-label">NO₂</span>
+                <button id="no2-right"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div id="o3-controls">
-                <button id="o3-left">O₃ ⬅</button>
-                <button id="o3-right">O₃ ➡</button>
+                <button id="o3-left"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="layer-label">NO₂</span>
+                <button id="o3-right"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div id="pm10-controls">
-                <button id="pm10-left">PM10 ⬅</button>
-                <button id="pm10-right">PM10 ➡</button>
+                <button id="pm10-left"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="layer-label">PM 10</span>
+                <button id="pm10-right"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
-            <div id="layer-legend" style="width:100%;max-width:700px;margin:16px auto 0 auto;"></div>
+            <div> 
+                <span> Timestamp: $ </span>
+            </div>
         </article>
         <footer>
             <a href="../index.html">Startseite</a>

@@ -1,3 +1,55 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    color: green;
+    font-family: Arial, sans-serif;
+}
+
+.logo {
+    font-size: 24px;
+    padding: 10px;
+}
+
+nav {
+    display: flex;
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+}
+
+li {
+    padding: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.fullscreen-hero {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    background-image: url('Startseite.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+}
+
+.minimal-footer {
+  padding: 20px;
+  background-color: lightgray;
+  text-align: center;
 }

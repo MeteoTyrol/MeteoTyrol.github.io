@@ -68,12 +68,14 @@ async function getDataPM10() {
     showPM10(jsondatapm10);
 }
 
+/* KI_BEGIN */
 function formatTimestamp(ts) {
     // Beispiel: "2024-06-25T13:00:00Z" → "25.06.2024 13:00"
     const d = new Date(ts);
     const pad = n => n.toString().padStart(2, '0');
     return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
+  /* KI_END */
 
 let currentNO2Index = 0;
 let currentO3Index = 0;
@@ -111,11 +113,13 @@ function showNO2(jsondatano2) {
     // Initial anzeigen
     updateNO2Layer();
 
+    /* KI_BEGIN */
     // Zeitstempel im HTML anzeigen
     const tsDiv = document.getElementById('layer-timestamp');
     if (tsDiv && times && times.length > 0) {
         tsDiv.textContent = "Zeit: " + formatTimestamp(times[currentNO2Index]);
     }
+      /* KI_END */
 }
 
 function showO3(jsondatao3) {
@@ -145,10 +149,12 @@ function showO3(jsondatao3) {
     }
 
     updateO3Layer();
+    /* KI_BEGIN */
     const tsDiv = document.getElementById('layer-timestamp');
     if (tsDiv && times && times.length > 0) {
         tsDiv.textContent = "Zeit: " + formatTimestamp(times[currentO3Index]);
     }
+      /* KI_END */
 }
 
 function showPM10(jsondatapm10) {
@@ -179,10 +185,12 @@ function showPM10(jsondatapm10) {
     }
 
     updatePM10Layer();
+    /* KI_BEGIN */
     const tsDiv = document.getElementById('layer-timestamp');
     if (tsDiv && times && times.length > 0) {
         tsDiv.textContent = "Zeit: " + formatTimestamp(times[currentPM10Index]);
     }
+      /* KI_END */
 }
 
 
@@ -204,6 +212,7 @@ map.addControl(new L.Control.Fullscreen());
     await getDataPM10();
 })();
 
+/* KI_BEGIN */
 document.addEventListener('keydown', function (e) {
     if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
 
@@ -241,3 +250,4 @@ document.addEventListener('keydown', function (e) {
         }
     }
 });
+  /* KI_END */

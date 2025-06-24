@@ -14,6 +14,7 @@ let map = L.map("map", {
 let overlays = {
     temperature: L.featureGroup().addTo(map),
     pressure: L.featureGroup(),
+    cloud: L.featureGroup(),
 };
 
 // Layer control
@@ -23,6 +24,7 @@ L.control.layers({
 }, {
     "Temperature": overlays.temperature,
     "Pressure": overlays.pressure,
+    "Cloud Fraction": overlays.cloud,
 }).addTo(map);
 
 // Maßstab
@@ -36,8 +38,9 @@ async function loadGeoJSON(url) {
     return await response.json();
 }
 
-// Temperatur-Overlay ohne Slider
-async function addTemperatureLayer(geojson) {
+/* KI_BEGIN */
+// Zentral: Daten für alle Layer laden und als dataGeoJson speichern
+async function createDataGeoJson(geojson) {
     let allFeatures = [];
     for (let i = 0; i < geojson.features.length; i++) {
         let lat = geojson.features[i].geometry.coordinates[1];
@@ -46,65 +49,64 @@ async function addTemperatureLayer(geojson) {
         let apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
         let apiResponse = await fetch(apiUrl);
         let jsondata = await apiResponse.json();
-        //console.log(jsondata);
         if (!jsondata.properties?.timeseries) continue;
-        // Nur den ersten Zeitpunkt anzeigen
-        let currentIndex = 0;
-        let ts = jsondata.properties.timeseries[currentIndex];
-        allFeatures.push({
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [lng, lat] },
-            properties: {
-                time: ts.time,
-                temp: ts.data.instant.details.air_temperature,
-                name: name
-            }
-        });
-};
+        // Für jeden Zeitpunkt ein Feature erzeugen
+        for (let ts of jsondata.properties.timeseries) {
+            allFeatures.push({
+                type: "Feature",
+                geometry: { type: "Point", coordinates: [lng, lat] },
+                properties: {
+                    time: ts.time,
+                    temp: ts.data.instant.details.air_temperature,
+                    pressure: ts.data.instant.details.air_pressure_at_sea_level,
+                    cloud: ts.data.instant.details.cloud_area_fraction,
+                    name: name
+                }
+            });
+        }
+    }
+    return { type: "FeatureCollection", features: allFeatures };
+}
+/* KI_END */
 
-    let tempGeoJson = { type: "FeatureCollection", features: allFeatures };
-
-    let tempLayer = L.geoJson(tempGeoJson, {
+let currentIndex = 0;
+// Temperatur-Overlay
+async function addTemperatureLayer(dataGeoJson) {
+    overlays.temperature.clearLayers();
+    function getColor(value) {
+        if (value < -10) return "rgba(152,245,255,0.8)";
+        if (value < 0) return "rgba(0,144,255,0.8)";
+        if (value < 10) return "rgba(0,255,127,0.8)";
+        if (value < 20) return "rgba(255,236,139,0.8)";
+        if (value < 25) return "rgba(255,165,0,0.8)";
+        return "rgba(255,69,0,0.8)";
+    }
+    let tempLayer = L.geoJson(dataGeoJson, {
+        filter: function(feature) {
+            // Zeige nur Features mit aktuellem Zeitpunkt
+            return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
+        },
         pointToLayer: function (feature, latlng) {
+            let value = feature.properties.temp;
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'temp-label',
-                    html: `<span style="background:rgba(255,255,255,0.8);padding:2px 4px;border-radius:4px;border:1px solid #888;font-size:12px;">${feature.properties.temp}°C</span>`,
+                    html: `<span style="background:${getColor(value)};padding:2px 4px;border-radius:4px;border:1px solid #888;font-size:12px;">${value}°C</span>`,
                     iconAnchor: [15, 15]
                 })
             });
         }
     });
-
     overlays.temperature.addLayer(tempLayer);
 }
 
-// Pressure-Overlay ohne Slider
-async function addPressureLayer(geojson) {
-    let allFeatures = [];
-    for (let i = 0; i < geojson.features.length; i++) {
-        let lat = geojson.features[i].geometry.coordinates[1];
-        let lng = geojson.features[i].geometry.coordinates[0];
-        let name = geojson.features[i].properties?.Stationsname || "";
-        let apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
-        let apiResponse = await fetch(apiUrl);
-        let jsondata = await apiResponse.json();
-        if (!jsondata.properties?.timeseries) continue;
-        // Nur den ersten Zeitpunkt anzeigen
-        let ts = jsondata.properties.timeseries[0];
-        allFeatures.push({
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [lng, lat] },
-            properties: {
-                time: ts.time,
-                pressure: ts.data.instant.details.air_pressure_at_sea_level,
-                name: name
-            }
-        });
-    }
-    let pressureGeoJson = { type: "FeatureCollection", features: allFeatures };
-
-    let pressureLayer = L.geoJson(pressureGeoJson, {
+// Pressure-Overlay
+async function addPressureLayer(dataGeoJson) {
+    overlays.pressure.clearLayers();
+    let pressureLayer = L.geoJson(dataGeoJson, {
+        filter: function(feature) {
+            return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
+        },
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, {
                 icon: L.divIcon({
@@ -115,14 +117,78 @@ async function addPressureLayer(geojson) {
             });
         }
     });
-
     overlays.pressure.addLayer(pressureLayer);
 }
+
+// Cloud-Overlay
+async function addCloudLayer(dataGeoJson) {
+    overlays.cloud.clearLayers();
+    function getColor(value) {
+        if (value < 30) return "rgba(191,239,255,0.8)";
+        if (value < 60) return "rgba(135,206,250,0.8)";
+        return "rgba(0,144,255,0.8)";
+    }
+    let cloudLayer = L.geoJson(dataGeoJson, {
+        filter: function(feature) {
+            return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
+        },
+        pointToLayer: function (feature, latlng) {
+            let value = feature.properties.cloud
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    className: 'cloud-label',
+                    html: `<span style="background:${getColor(value)};padding:2px 4px;border-radius:4px;border:1px solid #36a;font-size:12px;">${value} %</span>`,
+                    iconAnchor: [15, 15]
+                })
+            });
+        }
+    });
+    overlays.cloud.addLayer(cloudLayer);
+}
+/* KI_BEGIN */
+// Alle Zeitpunkte extrahieren (einmalig nach dem Laden)
+let allTimes = [];
+function extractAllTimes(dataGeoJson) {
+    let timesSet = new Set();
+    dataGeoJson.features.forEach(f => {
+        if (f.properties && f.properties.time) timesSet.add(f.properties.time);
+    });
+    allTimes = Array.from(timesSet).sort();
+}
+ /* KI_END */
 
 // Hauptfunktion
 (async () => {
     let geojson = await loadGeoJSON("station.geojson");
-    await addTemperatureLayer(geojson);
-    await addPressureLayer(geojson);
+    let dataGeoJson = await createDataGeoJson(geojson);
+    extractAllTimes(dataGeoJson);
+    await addTemperatureLayer(dataGeoJson);
+    await addPressureLayer(dataGeoJson);
+    await addCloudLayer(dataGeoJson);
+
+    /* KI_BEGIN */
+    // Pfeiltasten-Steuerung
+    document.addEventListener('keydown', async function(e) {
+        if (!allTimes.length) return;
+        if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+        if (e.key === "ArrowRight") {
+            currentIndex = (currentIndex + 1) % allTimes.length;
+        } else if (e.key === "ArrowLeft") {
+            currentIndex = (currentIndex - 1 + allTimes.length) % allTimes.length;
+        } else {
+            return;
+        }
+        await addTemperatureLayer(dataGeoJson);
+        await addPressureLayer(dataGeoJson);
+        await addCloudLayer(dataGeoJson);
+        // Optional: Zeitstempel im HTML anzeigen
+        const tsDiv = document.getElementById('layer-timestamp');
+        if (tsDiv) tsDiv.textContent = "Zeit: " + allTimes[currentIndex];
+    });
+
+    // Optional: Zeitstempel initial anzeigen
+    const tsDiv = document.getElementById('layer-timestamp');
+    if (tsDiv && allTimes.length) tsDiv.textContent = "Zeit: " + allTimes[currentIndex];
+     /* KI_END */
 })();
 

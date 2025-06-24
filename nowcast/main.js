@@ -7,6 +7,9 @@ let ibk = {
     zoom: 8,
 };
 
+//heutingen tag global initialisieren
+let today = new Date()
+
 // Karte initialisieren
 let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 
@@ -70,7 +73,6 @@ function getYYYY_MM_DD(date) {
 
 /*KI_BEGIN*/
 function isWithinPast3Days(date) {
-    const today = new Date();
     // Remove time part for accurate day comparison
     today.setHours(0, 0, 0, 0);
 
@@ -88,7 +90,7 @@ function isWithinPast3Days(date) {
 L.control.calendar({
     id: 1,
     minDate: "2020-01-01",
-    maxDate: getYYYY_MM_DD(new Date()), //max day is today
+    maxDate: getYYYY_MM_DD(today), //max day is today
     onSelectDate: (value) => loadAll(value),
     triggerFunctionOnLoad: true,
 

@@ -86,7 +86,6 @@ const lidarData = {
 
 // Lidar
 async function loadLidar(date) {
-  let today = new Date()
   let geojson = lidarData;
 
   L.geoJSON(geojson, {

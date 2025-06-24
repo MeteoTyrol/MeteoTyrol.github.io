@@ -2,11 +2,12 @@
 // vom AWS Beispiel übernommen und angepasst
 
 
-async function loadAWS(date) {
+
+
+async function loadAWS(date, sliderValues) {
     YYYYMMDD = getYYYYMMDD(date)
     YYYYMMDDtoday = getYYYYMMDD(today)
-    console.log(YYYYMMDD)
-    console.log(YYYYMMDDtoday)
+
     if (YYYYMMDD == YYYYMMDDtoday) {
 
         let url = "https://static.avalanche.report/weather_stations/stations.geojson"
@@ -14,12 +15,20 @@ async function loadAWS(date) {
         let jsondata = await response.json(); //dann die Daten in json umwandeln
 
         overlays.aws.clearLayers(); //clear overlay before adding markers
+        console.log(sliderValues)
+        min_height = sliderValues[0]
+        max_height = sliderValues[1]
+
 
         // Wetterstationen mit Icons und Popups
+        overlays.aws.clearLayers();
         L.geoJSON(jsondata, {
             attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
+            filter: function (feature) {
+                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
+            },
             pointToLayer: function (feature, latlng) {
-                //console.log(feature.properties);
+                console.log(feature.geometry.coordinates[2]);
                 let iconName = 'anemometer_AWS.png';
 
                 return L.marker(latlng, {
@@ -57,32 +66,51 @@ async function loadAWS(date) {
         }).addTo(overlays.aws);
     }
 
-    else {overlays.aws.clearLayers(); } // if the date is not today, dont show AWS popups!
+    else { overlays.aws.clearLayers(); } // if the date is not today, dont show AWS popups!
 
 }
 
-async function getCurrentParam(param, id) {
-    const url_data_temp = "https://dataset.api.hub.geosphere.at/v2/station/current/tawes-v2-10min?parameters={param}&station_ids={id}"
-    let url_value = url_data_temp.replace("{param}", param).replace("{id}", id)
+function strIDs(jsondata) {
+    str = "";
+    for (let i = 0; i < 492; i++) {
+        let id = jsondata.features[i].properties.id;
+        str += "station_ids="
+        str += id
+        str += "&"
+    }
+    return str;
+}
+
+
+async function getCurrentParam(param, jsondata) {
+    stationid_str = strIDs(jsondata)
+    const url_temp = "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters={param}&{id}&output_format=geojson"
+    let url_value = url_temp.replace("{param}", param).replace("{id}", stationid_str)
     //let value = await fetch(url_value)
     console.log(url_value)
     return url_value
 }
 
 
+
 // Geosphere Wetterstationen
 // vom AWS Beispiel übernommen und angepasst
 async function loadGeosphere() {
     const url_stations = "../forecast/station.geojson"
+
     let response = await fetch(url_stations); // await -> warte erst bis die Daten da sind
     let jsondata = await response.json(); //dann die Daten in json umwandeln
+
 
 
     // Wetterstationen mit Icons und Popups
     L.geoJSON(jsondata, {
         attribution: 'AWS Data: <a href= "https://data.hub.geosphere.at/dataset/klima-v2-10min"> Geosphere Austria</a>',
+        //filter: funciton (feature) {
+        //if feature.properties
+        //},
+
         pointToLayer: function (feature, latlng) {
-            //console.log(feature.properties);
             let iconName = 'anemometer_geosphere.png';
             return L.marker(latlng, {
                 icon: L.icon({
@@ -95,12 +123,12 @@ async function loadGeosphere() {
 
         },
         onEachFeature: function (feat_station, layer) {
-            console.log(feat_station.properties);
+            console.log(feat_station);
             let id = feat_station.properties.id
             layer.bindPopup(`
                 <h4>${feat_station.properties.Stationsname} (${feat_station["properties"]["Höhe [m]"]} m)</h4>
                 <ul>
-                    <li> Temperature: ${getCurrentParam("TL", id)}
+                    <li> Temperature: ${getCurrentParam("TL", jsondata)}
                 </ul>
                 
 

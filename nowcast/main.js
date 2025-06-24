@@ -87,26 +87,54 @@ function isWithinPast3Days(date) {
 /* KI_END */
 
 
+// Global variable to store the selected date
+let dateObj = today;
+
 L.control.calendar({
     id: 1,
     minDate: "2020-01-01",
     maxDate: getYYYY_MM_DD(today), //max day is today
-    onSelectDate: (value) => loadAll(value),
+    onSelectDate: (value) => {
+        dateObj = new Date(value); // update global dateObj
+        loadAll(value);
+    },
     triggerFunctionOnLoad: true,
-
 }).addTo(map);
 
-function loadAll(date_raw) {
-    // calendar returns the format YYYY-MM-DD
-    let dateObj = new Date(date_raw) //convert to Date object
-    loadRadiosonde(dateObj);
-    loadCeilo(dateObj);
-    loadLidar(dateObj);
-    loadAWS(dateObj);
-    //loadGeosphere();
-}
 
 
+var slider = document.getElementById('slider');
+
+
+
+noUiSlider.create(slider, {
+    start: [500, 1500],
+    step: 100,
+    connect: true,
+    range: {
+        'min': 450,
+        'max': 3500
+    },
+   
+    pips: {
+        mode: 'steps',
+        density: 4,
+        format: wNumb({
+            decimals: 0,
+            suffix: 'm'
+        })
+    },
+    tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+    //format: wNumb({decimals:1}),
+});
+
+
+
+slider.noUiSlider.on('end', function(values) {
+    let sliderValues = values.map(Number);
+    loadAWS(dateObj, sliderValues);
+    
+});
 
 // Maßstab
 L.control.scale({
@@ -118,4 +146,14 @@ async function loadGeoJSON(url) {
     let response = await fetch(url);
     let geojson = await response.json();
 
+}
+
+function loadAll(date_raw) {
+    // calendar returns the format YYYY-MM-DD
+    let dateObj = new Date(date_raw) //convert to Date object
+    loadRadiosonde(dateObj);
+    loadCeilo(dateObj);
+    loadLidar(dateObj);
+    loadAWS(dateObj,[450, 1500]); //inital filter for height same as slider
+    //loadGeosphere();
 }

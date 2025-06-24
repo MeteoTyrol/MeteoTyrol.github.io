@@ -58,36 +58,41 @@
     <link rel="stylesheet" href="../styleKartenseiten.css">
     <script defer src="main.js"></script>
 
-    <div class="logo">
-        <h1> Collection of Weather Data</h1>
-    </div>
-    <nav>
-        <ul>
-            <li><a href=konzept.pdf>Konzept</a></li>
-            <li> <a href=./hindcast />Climate Data</a></li>
-            <li><a href=./nowcast />Current Atmospheric Conditions</a></li>
-            <li><a href=./forecast />Forecast Air Quality</a></li>
-            <li><a href=./forecast2>Forecast</a></li>
-            <li><a href=./topo />Model topography</a></li>
-            <li><a href=./wiki />Wiki</a></li>
-        </ul>
-    </nav>
-<hr style="border-width: 100%;">
 
 </head>
 
 <body>
     <main>
-        <h2><i class="fa-regular fa-map"></i> Forecast Map Air Quality</h2>
-        <nav>
-            <i class="fab fa-github"></i>
-            <a href="https://github.com/MeteorologyIBK/">Github</a>
-            <!-- KI_BEGIN -->
-            <div id="layer-timestamp" style="width:100%;max-width:700px;margin:8px auto 0 auto;text-align:center;font-size:15px;"></div>
-            <!-- KI_END -->
-            <strong style="text-align: right;">Unit:</strong> [ug m-3]
-        </nav>
+        <header>
+            <div class="logo">
+                <h1> Collection of Weather Data</h1>
+            </div> <br>
+            <nav>
+                <ul>
+                    <li><a href=konzept.pdf>Konzept</a></li>
+                    <li> <a href=./hindcast />Climate Data</a></li>
+                    <li><a href=./nowcast />Current Atmospheric Conditions</a></li>
+                    <li><a href=./forecast />Forecast Air Quality</a></li>
+                    <li><a href=./forecast2>Forecast</a></li>
+                    <li><a href=./topo />Model topography</a></li>
+                    <li><a href=./wiki />Wiki</a></li>
+                </ul>
+            </nav>
+
+
+        </header>
+
         <article>
+            <h2><i class="fa-regular fa-map"></i> Forcast map: Air Quality</h2>
+            <nav>
+                <i class="fab fa-github"></i>
+                <a href="https://github.com/MeteorologyIBK/">Github</a>
+                <!-- KI_BEGIN -->
+                <div id="layer-timestamp" style="width:100%;max-width:700px;margin:8px auto 0 auto;text-align:center;font-size:15px;"></div>
+                <!-- KI_END -->
+                <strong style="text-align: right;">Unit:</strong> [ug m-3]
+            </nav>
+
             <div id="map"></div>
             <!--  <div id="no2-controls">
                 <button id="no2-left"><i class="fa-solid fa-arrow-left"></i></button>

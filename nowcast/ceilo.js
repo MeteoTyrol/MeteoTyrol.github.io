@@ -195,6 +195,6 @@ async function loadCeilo(date) {
   }).addTo(overlays.ceilo);
 
   }
-  else {overlays.ceilo.clearLayers();}
+  else {overlays.ceilo.clearLayers();} // füge nur Marker hinzu, wenn die Daten auch öffentlich zugänglich sind
 }
 

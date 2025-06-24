@@ -44,31 +44,43 @@ async function loadGeoJSON(url) {
     return await response.json();
 }
 
-let currentPM10Index = 0;
-let pm10Times = [];
-let pm10Markers = [];
+let currentIndex = 0;
 
-async function getDataPM10(geojson) {
-    pm10Markers = [];
-    pm10Times = [];
-    // Für jeden Punkt API-Daten holen
+
+async function getData(geojson) {
+    let allFeatures = [];
     for (let i = 0; i < geojson.features.length; i++) {
         let feature = geojson.features[i];
         let lat = feature.geometry.coordinates[1];
         let lng = feature.geometry.coordinates[0];
-        let apiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&hourly=pm10&domains=cams_europe`;
+        let apiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&hourly=nitrogen_dioxide,pm10,pm2_5,ozone&domains=cams_europe`;
         let response = await fetch(apiUrl);
-        let jsondatapm10 = await response.json();
+        let jsondata = await response.json();
 
-        // Alle Werte für diesen Punkt merken
-        let values = (jsondatapm10.hourly && jsondatapm10.hourly.pm10) ? jsondatapm10.hourly.pm10 : [];
-        pm10Markers.push({
-            lat,
-            lng,
-            values
-        });
+        // Zeitreihe merken (nur einmal, da für alle gleich)
+        if (i === 0 && jsondata.hourly && jsondata.hourly.time) {
+            pm10Times = jsondata.hourly.time;
+        }
+
+        // Für jedes Zeitintervall ein Feature erzeugen
+        if (jsondata.hourly && jsondata.hourly.time && jsondata.hourly.pm10) {
+            for (let j = 0; j < jsondata.hourly.time.length; j++) {
+                allFeatures.push({
+                    type: "Feature",
+                    geometry: { type: "Point", coordinates: [lng, lat] },
+                    properties: {
+                        time: jsondata.hourly.time[j],
+                        pm10: jsondata.hourly.pm10[j],
+                        no2: jsondata.hourly.nitrogen_dioxide ? jsondata.hourly.nitrogen_dioxide[j] : null,
+                        pm2_5: jsondata.hourly.pm2_5 ? jsondata.hourly.pm2_5[j] : null,
+                        ozone: jsondata.hourly.ozone ? jsondata.hourly.ozone[j] : null
+                    }
+                });
+            }
+        }
     }
-    updatePM10Layer();
+    // Gibt ein GeoJSON-FeatureCollection-Objekt zurück
+    return { type: "FeatureCollection", features: allFeatures };
 }
 
 // Layer aktualisieren
@@ -172,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Hauptfunktion
 (async () => {
     let geojson = await loadGeoJSON("station.geojson");
-   //await getDataPM10(geojson);
-   await getDataNO2(geojson);
-})();
+   let datajson = await getData(geojson);
+   console.log(datajson)
+   //await getDataNO2(geojson);
+})()

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Forecast</title>
+    <link rel="icon" type="image/svg+xml" href="../cloud-solid.svg">
 
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -23,36 +24,7 @@
     <!--Leaflet fullscreen-->
     <script src=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/Leaflet.fullscreen.min.js "></script>
     <link href=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/leaflet.fullscreen.min.css " rel="stylesheet">
-
-
-
-    <!-- Leaflet Timedimension 
-    <script src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
--->
-
-    <!-- jQuery (Pflicht für LeafletSlider) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- LeafletSlider CSS & JS  -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-slider@1.0.2/leaflet.slider.css" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-slider@1.0.2/leaflet.slider.js"></script>
-
-
-    <!--Leaflet calendar
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/antoniovlx/leaflet-calendar@master/css/leaflet-calendar.css" />
-    <script src=" https://cdn.jsdelivr.net/npm/leaflet-calendar@1.1.4/js/leaflet-calendar.min.js "></script>
-    -->
-
-    <!-- Leaflet Timeline Control
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.timeline.control@1.0.2/dist/leaflet-timeline-control.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.timeline.control@1.0.2/dist/leaflet-timeline-control.min.js"></script>
- -->
-
-    <!-- Leaflet Datepicker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-datepicker@1.0.2/dist/leaflet-datepicker.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-datepicker@1.0.2/dist/leaflet-datepicker.min.js"></script>
-
+    
     <!-- eigene Stiele und Skript-->
 
     <link rel="stylesheet" href="../styleKartenseiten.css">
@@ -68,6 +40,7 @@
             </div> <br>
             <nav>
                 <ul>
+                    <li><a href="../"> Home</a></li>
                     <li><a href=../konzept.pdf>Konzept</a></li>
                     <li> <a href=../hindcast />Climate Data</a></li>
                     <li><a href=../nowcast />Current Atmospheric Conditions</a></li>
@@ -88,7 +61,7 @@
         </nav>
         <article>
             <div id="map"></div>
-             <strong>Data Sources:
+            <strong>Data Sources:
                 <a href="https://api.met.no/weatherapi/locationforecast/2.0/documentation"> Norwegian Weather Service </a>
             </strong>
             <img src="Farbskala.png" height="170px"> <br>
@@ -99,7 +72,7 @@
 
         </article>
         <footer>
-           
+
         </footer>
     </main>
 

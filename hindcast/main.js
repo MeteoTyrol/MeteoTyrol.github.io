@@ -39,12 +39,14 @@ L.control.scale({
 
 // Temperatur-Layer
 async function showTemp(jsondata) {
+    overlays.temperature.clearLayers(); // Vorherige Marker entfernen
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
+            // Temperaturwert aus den Daten holen (z.B. Mittelwert)
             let temp = feature.properties.parameters.tl_mittel.data[0];
             return L.marker(latlng, {
                 icon: L.divIcon({
-                    html: `<span>${temp}°C</span>`,
+                    html: `<span style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${temp}°C</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -74,9 +76,9 @@ function showPres(jsondata) {
 async function loadGeoJSON(url) {
     let response = await fetch(url);
     let geojson = await response.json();
-    console.log(geojson.features);
+    console.log(geojson.features[0].properties);
     showTemp(geojson);
-    showPres(geojson);
+    //showPres(geojson);
     //showPressureAtEachPoint(geojson);
 }
 loadGeoJSON("Jahressatz.json");

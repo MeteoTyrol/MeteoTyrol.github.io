@@ -71,6 +71,16 @@ function showPres(jsondata) {
     }).addTo(overlays.pressure);
 }
 
+// minimap plugin mit Grundkarte Tirol Sommer als Layer
+var osm2 = new L.TileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png");
+var miniMap = new L.Control.MiniMap(osm2, {
+    toggleDisplay: true,
+    minimized: false,
+}).addTo(map);
+
+//fullScreen 
+map.addControl(new L.Control.Fullscreen());
+
 
 // GeoJSON asynchron laden
 async function loadGeoJSON(url) {

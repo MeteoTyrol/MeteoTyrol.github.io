@@ -183,6 +183,18 @@ function extractAllTimes(dataGeoJson) {
 }
 /* KI_END */
 
+// minimap plugin mit Grundkarte Tirol Sommer als Layer
+var osm2 = new L.TileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png");
+var miniMap = new L.Control.MiniMap(osm2, {
+    toggleDisplay: true,
+    minimized: false,
+}).addTo(map);
+
+//fullScreen 
+map.addControl(new L.Control.Fullscreen());
+
+
+
 // Hauptfunktion
 (async () => {
     let geojson = await loadGeoJSON("station.geojson");

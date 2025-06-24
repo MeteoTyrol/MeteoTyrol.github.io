@@ -7,7 +7,8 @@ let ibk = {
 // Karte initialisieren
 let map = L.map("map", {
     center: [ibk.lat, ibk.lng],
-    zoom: 7
+    zoom: 7,
+    keyboard: false
 });
 
 // thematische Layer
@@ -86,7 +87,7 @@ async function addTemperatureLayer(dataGeoJson) {
         return "rgba(255,69,0,0.8)";
     }
     let tempLayer = L.geoJson(dataGeoJson, {
-        filter: function(feature) {
+        filter: function (feature) {
             // Zeige nur Features mit aktuellem Zeitpunkt
             return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
         },
@@ -108,7 +109,7 @@ async function addTemperatureLayer(dataGeoJson) {
 async function addPressureLayer(dataGeoJson) {
     overlays.pressure.clearLayers();
     let pressureLayer = L.geoJson(dataGeoJson, {
-        filter: function(feature) {
+        filter: function (feature) {
             return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
         },
         pointToLayer: function (feature, latlng) {
@@ -133,7 +134,7 @@ async function addCloudLayer(dataGeoJson) {
         return "rgba(0,144,255,0.8)";
     }
     let cloudLayer = L.geoJson(dataGeoJson, {
-        filter: function(feature) {
+        filter: function (feature) {
             return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
         },
         pointToLayer: function (feature, latlng) {
@@ -154,7 +155,7 @@ async function addCloudLayer(dataGeoJson) {
 async function addWindLayer(dataGeoJson) {
     overlays.wind.clearLayers();
     let windLayer = L.geoJson(dataGeoJson, {
-        filter: function(feature) {
+        filter: function (feature) {
             return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
         },
         pointToLayer: function (feature, latlng) {
@@ -180,7 +181,7 @@ function extractAllTimes(dataGeoJson) {
     });
     allTimes = Array.from(timesSet).sort();
 }
- /* KI_END */
+/* KI_END */
 
 // Hauptfunktion
 (async () => {
@@ -194,7 +195,7 @@ function extractAllTimes(dataGeoJson) {
 
     /* KI_BEGIN */
     // Pfeiltasten-Steuerung
-    document.addEventListener('keydown', async function(e) {
+    document.addEventListener('keydown', async function (e) {
         if (!allTimes.length) return;
         if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
         if (e.key === "ArrowRight") {
@@ -215,6 +216,6 @@ function extractAllTimes(dataGeoJson) {
     // Optional: Zeitstempel initial anzeigen
     const tsDiv = document.getElementById('layer-timestamp');
     if (tsDiv && allTimes.length) tsDiv.textContent = "Zeit: " + allTimes[currentIndex];
-     /* KI_END */
+    /* KI_END */
 })();
 

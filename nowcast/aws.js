@@ -1,6 +1,14 @@
 // AWS Wetterstationen
 // vom AWS Beispiel übernommen und angepasst
-async function loadAWS() {
+
+
+let todayYYYYMMDD = getYYYYMMDD(new Date())
+
+
+async function loadAWS(date) {
+    YYYYMMDD = getYYYYMMDD(date)
+    if (YYYYMMDD == todayYYYYMMDD) {
+    
     let url = "https://static.avalanche.report/weather_stations/stations.geojson"
     let response = await fetch(url); // await -> warte erst bis die Daten da sind
     let jsondata = await response.json(); //dann die Daten in json umwandeln
@@ -45,7 +53,9 @@ async function loadAWS() {
         }
 
 
-    }).addTo(overlays.aws);
+    }).addTo(overlays.aws);}
+
+    else {} // if the date is not today, dont show AWS popups!
 
 }
 

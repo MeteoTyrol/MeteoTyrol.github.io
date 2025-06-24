@@ -134,8 +134,6 @@ let htmlURLtemplate = "https://weather.uwyo.edu/wsgi/sounding?datetime={YYYY-MM-
 async function loadRadiosonde(date) {
 
   L.geoJSON(rasoData, {
-    attribution: 'Radiosonde Data: <a href= "https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a>',
-
     pointToLayer: function (feature, latlng) {
       return L.marker(latlng,
         {

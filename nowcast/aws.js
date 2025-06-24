@@ -259,7 +259,6 @@ async function loadWind(date, sliderValues) {
         overlays.wind.clearLayers(); //clear overlay before adding markers
 
         L.geoJSON(jsondata, {
-            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
                 //console.log(feature)
                 if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) {

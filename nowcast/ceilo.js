@@ -157,8 +157,6 @@ const ceiloData = {
 async function loadCeilo(date) {
   if (isWithinPast3Days(date)) {
     L.geoJSON(ceiloData, {
-      attribution: 'Ceilometer Data: <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> GeoSphere Austria </a>',
-
       pointToLayer: function (feature, latlng) {
         return L.marker(latlng,
           {

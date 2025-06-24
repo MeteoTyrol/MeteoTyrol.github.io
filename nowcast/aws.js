@@ -17,6 +17,7 @@ async function loadAWS(date) {
         let response = await fetch(url); // await -> warte erst bis die Daten da sind
         let jsondata = await response.json(); //dann die Daten in json umwandeln
 
+        overlays.aws.clearLayers(); //clear overlay before adding markers
 
         // Wetterstationen mit Icons und Popups
         L.geoJSON(jsondata, {
@@ -60,7 +61,7 @@ async function loadAWS(date) {
         }).addTo(overlays.aws);
     }
 
-    else { } // if the date is not today, dont show AWS popups!
+    else {overlays.aws.clearLayers(); } // if the date is not today, dont show AWS popups!
 
 }
 

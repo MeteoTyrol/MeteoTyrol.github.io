@@ -22,7 +22,8 @@ let overlays = {
     uibk: L.featureGroup(),
     ceilo: L.featureGroup(),
     temp: L.featureGroup(),
-    rh: L.featureGroup().addTo(map),
+    rh: L.featureGroup(),
+    wind: L.featureGroup().addTo(map),
 };
 
 // Hintergrund-Layer
@@ -41,6 +42,7 @@ L.control.layers({
         "Temperature": overlays.temp,
         "Ceilometer": overlays.ceilo,
         "Relative Humidity": overlays.rh,
+        "Wind": overlays.wind,
 
     }
 
@@ -99,7 +101,7 @@ L.control.calendar({
     maxDate: getYYYY_MM_DD(today), //max day is today
     onSelectDate: (value) => {
         dateObj = new Date(value); // update global dateObj
-        loadAll(value);
+        loadAll(value, [450, 1500]); // initial values for height filtering of station data
     },
     triggerFunctionOnLoad: true,
 }).addTo(map);
@@ -118,7 +120,7 @@ noUiSlider.create(slider, {
         'min': 450,
         'max': 3500
     },
-   
+
     pips: {
         mode: 'steps',
         density: 4,
@@ -127,25 +129,21 @@ noUiSlider.create(slider, {
             suffix: 'm'
         })
     },
-    tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+    tooltips: [wNumb({ decimals: 0 }), wNumb({ decimals: 0 })],
     //format: wNumb({decimals:1}),
 });
 
 
 
-slider.noUiSlider.on('end', function(values) {
+slider.noUiSlider.on('end', function (values) {
     let sliderValues = values.map(Number);
-    loadAWS(dateObj, sliderValues);
-    loadTemp(dateObj, sliderValues);
-    loadRH(dateObj, sliderValues);
-    
+    loadAll(dateObj, sliderValues);
 });
 
-slider.noUiSlider.on('start', function(values) {
+slider.noUiSlider.on('start', function (values) {
     let sliderValues = values.map(Number);
-    loadAWS(dateObj, sliderValues);
-    loadTemp(dateObj, sliderValues);
-    
+    loadAll(dateObj, sliderValues);
+
 });
 
 // Maßstab
@@ -160,14 +158,15 @@ async function loadGeoJSON(url) {
 
 }
 
-function loadAll(date_raw) {
+function loadAll(date_raw, sliderValues) {
     // calendar returns the format YYYY-MM-DD
     let dateObj = new Date(date_raw) //convert to Date object
     loadRadiosonde(dateObj);
     loadCeilo(dateObj);
     loadLidar(dateObj);
-    loadAWS(dateObj,[450, 1500]); //inital filter for height same as slider
-    loadTemp(dateObj,[450, 1500]);
-    loadRH(dateObj,[450, 1500]);
-    //loadGeosphere();
+    loadAWS(dateObj, sliderValues); 
+    loadTemp(dateObj, sliderValues);
+    loadRH(dateObj, sliderValues);
+    loadWind(dateObj, sliderValues);
+    
 }

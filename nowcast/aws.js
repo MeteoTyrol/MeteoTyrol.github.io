@@ -3,7 +3,7 @@
 
 
 const COLORS = {
-    temperature: [
+    temperature: [ //Temperature in °C
         { min: -100, max: -25, color: "#9f80ff" },
         { min: -25, max: -20, color: "#784cff" },
         { min: -20, max: -15, color: "#0f5abe" },
@@ -20,6 +20,8 @@ const COLORS = {
 
     ],
     relativeHumidity: [ //colormap similar to matplotlib YlGn that is often used for RH
+        //RH in %
+        /*BEGIN_KI*/
         { min: 0, max: 5, color: "#ffffe5" },
         { min: 5, max: 10, color: "#f7fcb9" },
         { min: 10, max: 15, color: "#d9f0a3" },
@@ -41,28 +43,34 @@ const COLORS = {
         { min: 90, max: 95, color: "#a1d99b" },
         { min: 95, max: 100, color: "#74c476" },
         { min: 100, max: 100, color: "#00441b" }
-],
-    snowheight:[
-        { min:0, max:1, color: "#fff" },
-        { min:1, max:10, color: "#ffffb2" },
-        { min:10, max:25, color: "#b0ffbc" },
-        { min:25, max:50, color: "#8cffff" },
-        { min:50, max:100, color: "#19cdff" },
-        { min:100, max:200, color: "#1982ff" },
-        { min:200, max:300, color: "#0f5abe" },
-        { min:300, max:400, color: "#784bff" },
-        { min:400, max:1000, color: "#cd0feb" },
+        /*END_KI*/
     ],
 
-    wind: [
-        {min: 0, max: 5, color: "#ffff64"},
-        {min: 5, max: 10, color: "#c8ff64;"},
-        {min: 10, max: 20, color: "#96ff96;"},
-        {min: 20, max: 40, color: "#32c8ff"},
-        {min: 40, max: 60, color: "#6496ff"},
-        {min: 60, max: 80, color: "#9664ff"},
-        {min: 80, max: 200, color: "#ff3232"},
-    ],
+
+    windSpeed: [ // this color map is a custom color map from ACINN used for windspeed in lidar visualizations
+        // Windspeed in m/s
+        { min: 0, max: 1, color: "#fefeff" },
+        { min: 1, max: 2, color: "#fffdca" },
+        { min: 2, max: 3, color: "#e1f38a" },
+        { min: 3, max: 4, color: "#aae683" },
+        { min: 4, max: 5, color: "#6ddc88" },
+        { min: 5, max: 6, color: "#00d095" },
+        { min: 6, max: 7, color: "#01c5a4" },
+        { min: 7, max: 8, color: "#01b9b5" },
+        { min: 8, max: 9, color: "#01acc1" },
+        { min: 9, max: 10, color: "#009ecd" },
+        { min: 10, max: 11, color: "#0191d4" },
+        { min: 11, max: 12, color: "#377ed9" },
+        { min: 12, max: 13, color: "#706cd8" },
+        { min: 13, max: 14, color: "#9058d3" },
+        { min: 14, max: 15, color: "#a845c9" },
+        { min: 15, max: 16, color: "#b633bc" },
+        { min: 16, max: 17, color: "#c123ac" },
+        { min: 17, max: 18, color: "#c2315d" },
+        { min: 18, max: 19, color: "#d36649" },
+        { min: 19, max: 20, color: "#f68b45" },
+        { min: 20, max: 100, color: "#ffcc4f" } // 20+ case
+    ]
 }
 
 function getColor(value, ramp) {
@@ -74,11 +82,6 @@ function getColor(value, ramp) {
     }
 }
 
-
-
-
-
-//console.log(getColor(0, COLORS.temperature));
 
 
 async function loadAWS(date, sliderValues) {
@@ -115,7 +118,7 @@ async function loadAWS(date, sliderValues) {
 
             },
             onEachFeature: function (feature, layer) {
-                
+
                 let pointInTime = new Date(feature.properties.date); //new date macht aus dem String ein Date-Objekt
                 //console.log(feature.properties.date)
                 //console.log(pointInTime);
@@ -154,30 +157,31 @@ async function loadTemp(date, sliderValues) {
         let response = await fetch(url); // await -> warte erst bis die Daten da sind
         let jsondata = await response.json(); //dann die Daten in json umwandeln
 
-        
+
         min_height = sliderValues[0]
         max_height = sliderValues[1]
 
 
         // Wetterstationen mit Icons und Popups
         overlays.temp.clearLayers(); //clear overlay before adding markers
-        
+
         L.geoJSON(jsondata, {
             attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
-                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
+                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) {
+                    if (feature.properties.LT !== undefined) { return true }
+                }
             },
             pointToLayer: function (feature, latlng) {
                 let color = getColor(feature.properties.LT, COLORS.temperature);
-                if (feature.properties.LT !== undefined) { 
-                    return L.marker(latlng, {
-                        icon: L.divIcon({
-                            html: `<span style ="background-color:${color}">${feature.properties.LT || "-"}°C </span>`,
-                            className: "aws-div-icon",
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<span style ="background-color:${color}">${feature.properties.LT || "-"}°C </span>`,
+                        className: "aws-div-icon",
 
-                            }),
-                    });
-                }
+                    }),
+                });
+
 
             },
         }).addTo(overlays.temp);
@@ -197,31 +201,33 @@ async function loadRH(date, sliderValues) {
         let response = await fetch(url); // await -> warte erst bis die Daten da sind
         let jsondata = await response.json(); //dann die Daten in json umwandeln
 
-        
+
         min_height = sliderValues[0]
         max_height = sliderValues[1]
 
 
         // Wetterstationen mit Icons und Popups
         overlays.rh.clearLayers(); //clear overlay before adding markers
-        
+
         L.geoJSON(jsondata, {
             attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
-                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
+                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) {
+                    if (feature.properties.RH !== undefined) { return true }
+                }
             },
-            
-            pointToLayer: function (feature, latlng) {
-            let color = getColor(feature.properties.RH, COLORS.relativeHumidity);
-            // dont show anything if RH undefined
-            if (feature.properties.RH !== undefined) { 
-            return L.marker(latlng, {
-                icon: L.divIcon({
-                    html: `<span style ="background-color:${color}">${feature.properties.RH}% </span>`,
-                    className: "aws-div-icon",
 
-                }),
-            });}
+            pointToLayer: function (feature, latlng) {
+                let color = getColor(feature.properties.RH, COLORS.relativeHumidity);
+                // dont show anything if RH undefined
+
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<span style ="background-color:${color}">${feature.properties.RH}% </span>`,
+                        className: "aws-div-icon",
+
+                    }),
+                });
 
             },
 
@@ -232,6 +238,68 @@ async function loadRH(date, sliderValues) {
     else { overlays.rh.clearLayers(); } // if the date is not today, dont show popups or markers!
 
 }
+
+
+async function loadWind(date, sliderValues) {
+    YYYYMMDD = getYYYYMMDD(date)
+    YYYYMMDDtoday = getYYYYMMDD(today)
+
+    if (YYYYMMDD == YYYYMMDDtoday) {
+
+        let url = "https://static.avalanche.report/weather_stations/stations.geojson"
+        let response = await fetch(url); // await -> warte erst bis die Daten da sind
+        let jsondata = await response.json(); //dann die Daten in json umwandeln
+
+
+        min_height = sliderValues[0]
+        max_height = sliderValues[1]
+
+
+        // Wetterstationen mit Icons und Popups
+        overlays.wind.clearLayers(); //clear overlay before adding markers
+
+        L.geoJSON(jsondata, {
+            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
+            filter: function (feature) {
+                //console.log(feature)
+                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) {
+                    if (feature.properties.WG !== undefined) { return true }
+                }
+            },
+
+            pointToLayer: function (feature, latlng) {
+                let wind_ms = feature.properties.WG / 3.6
+                let color = getColor(wind_ms, COLORS.windSpeed);
+
+                // round direction values to degrees because wind direction measurements are quite uncertain
+                //let dir = feature.properties.WR !== undefined ? feature.properties.WR.toFixed(0) : "-";
+                let dir = feature.properties.WR !== undefined ? feature.properties.WR.toFixed(0) : "-";
+
+                console.log(feature.properties.WG);
+                console.log(wind_ms);
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<span style="color:${color} ">
+                                <i style="transform: rotate(${feature.properties.WR}deg);" class="fa-solid fa-circle-arrow-down"></i>
+                                <i>${feature.properties.WG.toFixed(0)}m/s</i>
+                            </span>`,
+                        className: "aws-div-icon-winddir",
+                    }),
+                });
+
+            },
+
+
+        }).addTo(overlays.wind);
+    }
+
+    else { overlays.wind.clearLayers(); } // if the date is not today, dont show popups or markers!
+
+}
+
+
+
+
 
 
 
@@ -250,27 +318,9 @@ function strIDs(jsondata) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Everything underneath this line was form my try to acces the Geosphere stations
+//But because their API does not allow so many requests (in the way i tried) 
+//This mission was aborted and all code below is left for someone else to try again
 
 async function getCurrentParam(param, jsondata) {
     stationid_str = strIDs(jsondata)
@@ -280,9 +330,6 @@ async function getCurrentParam(param, jsondata) {
     console.log(url_value)
     return url_value
 }
-
-
-
 
 // Geosphere Wetterstationen
 // vom AWS Beispiel übernommen und angepasst

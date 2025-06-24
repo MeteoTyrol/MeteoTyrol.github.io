@@ -279,14 +279,13 @@ async function loadWind(date, sliderValues) {
                 console.log(wind_ms);
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="color:${color} ">
-                                <i style="transform: rotate(${feature.properties.WR}deg);" class="fa-solid fa-circle-arrow-down"></i>
-                                <i>${feature.properties.WG.toFixed(0)}m/s</i>
+                        html: `<span style="background-color: ${color}; display: flex; align-items: center; gap: 0px;">
+                                <i style="transform: rotate(${feature.properties.WR}deg); color:black" class="fa-solid fa-circle-arrow-down"></i>
+                                <span style="background-color:${color};">${feature.properties.WG.toFixed(0)}m/s</span>
                             </span>`,
                         className: "aws-div-icon-winddir",
                     }),
                 });
-
             },
 
 

@@ -185,7 +185,7 @@ async function loadCeilo(date) {
                 <ul>
                     <li>Station ID: ${id}
                     <li>Date: ${date.toLocaleDateString()}
-                    <li>Type: ${feature.properties.type} Noch Link hinzufügen!!!!
+                    <li>Type: ${feature.properties.type}
                 <ul>
                 <a href="${url_full}" target="ceilo">Full Range Plot</a>
             `);

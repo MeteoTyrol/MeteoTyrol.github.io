@@ -42,6 +42,7 @@ async function showTemp(jsondata) {
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
             let temp = feature.properties.parameters.tl_mittel.data[0];
+            console.log(temp)
             return L.marker(latlng, {
                 icon: L.divIcon({
                     html: `<span>${temp}°C</span>`,
@@ -74,11 +75,12 @@ function showPres(jsondata) {
 async function loadGeoJSON(url) {
     let response = await fetch(url);
     let geojson = await response.json();
-    console.log(geojson.features);
+    //console.log(geojson.features);
     showTemp(geojson);
     showPres(geojson);
     //showPressureAtEachPoint(geojson);
-}
+};
+
 loadGeoJSON("Jahressatz.json");
 
 

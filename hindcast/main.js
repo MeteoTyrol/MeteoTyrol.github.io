@@ -43,14 +43,16 @@ async function showTemp(jsondata) {
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
             // Temperaturwert aus den Daten holen (z.B. Mittelwert)
-            let temp = feature.properties.parameters.tl_mittel.data[0];
-            console.log(temp)
-            return L.marker(latlng, {
-                icon: L.divIcon({
-                    html: `<span style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${temp}°C</span>`,
-                    iconAnchor: [15, 15]
-                })
-            });
+            let data = feature.properties.parameters.tl_mittel.data;
+let validTemp = data.find(d => d !== null && d !== undefined);
+if (validTemp !== undefined) {
+    return L.marker(latlng, {
+        icon: L.divIcon({
+            html: `<span style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${validTemp}°C</span>`,
+            iconAnchor: [15, 15]
+        })
+    });
+}
         },
     }).addTo(overlays.temperature);
 }
@@ -72,6 +74,29 @@ function showPres(jsondata) {
     }).addTo(overlays.pressure);
 }
 
+let currentYearIndex = 29; // z.B. für 2023
+
+function showRain(jsondata) {
+    overlays.rain.clearLayers(); // Vorherige Marker entfernen
+    L.geoJSON(jsondata, {
+        pointToLayer: function (feature, latlng) {
+            let data = feature.properties.parameters.rr.data;
+            let rain = data[currentYearIndex];
+
+            if (rain !== null && rain !== undefined) {
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${rain} mm</span>`,
+                        iconAnchor: [15, 15]
+                    })
+                });
+            }
+        },
+    }).addTo(overlays.rain);
+}
+
+
+
 // minimap plugin mit Grundkarte Tirol Sommer als Layer
 var osm2 = new L.TileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png");
 var miniMap = new L.Control.MiniMap(osm2, {
@@ -89,11 +114,12 @@ async function loadGeoJSON(url) {
     let geojson = await response.json();
     console.log(geojson.features[0].properties);
     showTemp(geojson);
+    showRain(geojson);
     //showPres(geojson);
     //showPressureAtEachPoint(geojson);
 };
 
-loadGeoJSON("Jahressatz.json");
+loadGeoJSON("./Jahressatz.geojson");
 
 
 

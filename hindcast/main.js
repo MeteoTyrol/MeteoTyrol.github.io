@@ -41,7 +41,7 @@ L.control.scale({
 async function showTemp(jsondata) {
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
-            let temp = feature.properties.parameters.tl_mittel.data;
+            let temp = feature.properties.parameters.tl_mittel.data[0];
             return L.marker(latlng, {
                 icon: L.divIcon({
                     html: `<span>${temp}°C</span>`,
@@ -53,13 +53,15 @@ async function showTemp(jsondata) {
 }
 
 // Pressure-Layer
+currentIndex = 0;
 function showPres(jsondata) {
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
-            let pressure = feature.properties.parameters.p.data;
+            // Hole den Druckwert für dieses Feature
+            let pressure = feature.properties.parameters.p.data[currentIndex];
             return L.marker(latlng, {
                 icon: L.divIcon({
-                    html: `<span>${pressure}°C</span>`,
+                    html: `<span>${pressure} hPa</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -72,10 +74,10 @@ function showPres(jsondata) {
 async function loadGeoJSON(url) {
     let response = await fetch(url);
     let geojson = await response.json();
-    //console.log(geojson);
+    console.log(geojson.features);
     showTemp(geojson);
     showPres(geojson);
-    showPressureAtEachPoint(geojson);
+    //showPressureAtEachPoint(geojson);
 }
 loadGeoJSON("Jahressatz.json");
 

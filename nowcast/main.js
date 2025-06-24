@@ -18,10 +18,11 @@ let overlays = {
     raso: L.featureGroup(),
     lidar: L.featureGroup(),
     geosphere: L.featureGroup(),
-    aws: L.featureGroup().addTo(map),
+    aws: L.featureGroup(),
     uibk: L.featureGroup(),
     ceilo: L.featureGroup(),
-    temp: L.featureGroup().addTo(map),
+    temp: L.featureGroup(),
+    rh: L.featureGroup().addTo(map),
 };
 
 // Hintergrund-Layer
@@ -38,7 +39,8 @@ L.control.layers({
         //"Geosphere Stations": overlays.geosphere,
         "AWS Stations": overlays.aws,
         "Temperature": overlays.temp,
-        "Ceilometer": overlays.ceilo
+        "Ceilometer": overlays.ceilo,
+        "Relative Humidity": overlays.rh,
 
     }
 
@@ -135,6 +137,7 @@ slider.noUiSlider.on('end', function(values) {
     let sliderValues = values.map(Number);
     loadAWS(dateObj, sliderValues);
     loadTemp(dateObj, sliderValues);
+    loadRH(dateObj, sliderValues);
     
 });
 
@@ -164,6 +167,7 @@ function loadAll(date_raw) {
     loadCeilo(dateObj);
     loadLidar(dateObj);
     loadAWS(dateObj,[450, 1500]); //inital filter for height same as slider
-    loadTemp(dateObj,[450, 1500])
+    loadTemp(dateObj,[450, 1500]);
+    loadRH(dateObj,[450, 1500]);
     //loadGeosphere();
 }

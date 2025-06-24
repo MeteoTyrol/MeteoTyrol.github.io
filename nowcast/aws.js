@@ -19,6 +19,29 @@ const COLORS = {
         { min: 30, max: 100, color: "#fa3c96" },
 
     ],
+    relativeHumidity: [ //colormap similar to matplotlib YlGn that is often used for RH
+        { min: 0, max: 5, color: "#ffffe5" },
+        { min: 5, max: 10, color: "#f7fcb9" },
+        { min: 10, max: 15, color: "#d9f0a3" },
+        { min: 15, max: 20, color: "#addd8e" },
+        { min: 20, max: 25, color: "#78c679" },
+        { min: 25, max: 30, color: "#41ab5d" },
+        { min: 30, max: 35, color: "#238443" },
+        { min: 35, max: 40, color: "#005a32" },
+        { min: 40, max: 45, color: "#f7fcb9" },
+        { min: 45, max: 50, color: "#d9f0a3" },
+        { min: 50, max: 55, color: "#addd8e" },
+        { min: 55, max: 60, color: "#78c679" },
+        { min: 60, max: 65, color: "#41ab5d" },
+        { min: 65, max: 70, color: "#238443" },
+        { min: 70, max: 75, color: "#006837" },
+        { min: 75, max: 80, color: "#004529" },
+        { min: 80, max: 85, color: "#e5f5e0" },
+        { min: 85, max: 90, color: "#c7e9c0" },
+        { min: 90, max: 95, color: "#a1d99b" },
+        { min: 95, max: 100, color: "#74c476" },
+        { min: 100, max: 100, color: "#00441b" }
+],
     snowheight:[
         { min:0, max:1, color: "#fff" },
         { min:1, max:10, color: "#ffffb2" },
@@ -145,22 +168,68 @@ async function loadTemp(date, sliderValues) {
                 if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
             },
             pointToLayer: function (feature, latlng) {
-            let color = getColor(feature.properties.LT, COLORS.temperature);
-            return L.marker(latlng, {
-                icon: L.divIcon({
-                    html: `<span style ="background-color:${color}">${feature.properties.LT || "-"}°C </span>`,
-                    className: "aws-div-icon",
+                let color = getColor(feature.properties.LT, COLORS.temperature);
+                if (feature.properties.LT !== undefined) { 
+                    return L.marker(latlng, {
+                        icon: L.divIcon({
+                            html: `<span style ="background-color:${color}">${feature.properties.LT || "-"}°C </span>`,
+                            className: "aws-div-icon",
 
-                }),
-            });
+                            }),
+                    });
+                }
 
             },
-
-
         }).addTo(overlays.temp);
     }
 
     else { overlays.temp.clearLayers(); } // if the date is not today, dont show popups or markers!
+
+}
+
+async function loadRH(date, sliderValues) {
+    YYYYMMDD = getYYYYMMDD(date)
+    YYYYMMDDtoday = getYYYYMMDD(today)
+
+    if (YYYYMMDD == YYYYMMDDtoday) {
+
+        let url = "https://static.avalanche.report/weather_stations/stations.geojson"
+        let response = await fetch(url); // await -> warte erst bis die Daten da sind
+        let jsondata = await response.json(); //dann die Daten in json umwandeln
+
+        
+        min_height = sliderValues[0]
+        max_height = sliderValues[1]
+
+
+        // Wetterstationen mit Icons und Popups
+        overlays.rh.clearLayers(); //clear overlay before adding markers
+        
+        L.geoJSON(jsondata, {
+            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
+            filter: function (feature) {
+                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
+            },
+            
+            pointToLayer: function (feature, latlng) {
+            let color = getColor(feature.properties.RH, COLORS.relativeHumidity);
+            // dont show anything if RH undefined
+            if (feature.properties.RH !== undefined) { 
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    html: `<span style ="background-color:${color}">${feature.properties.RH}% </span>`,
+                    className: "aws-div-icon",
+
+                }),
+            });}
+
+            },
+
+
+        }).addTo(overlays.rh);
+    }
+
+    else { overlays.rh.clearLayers(); } // if the date is not today, dont show popups or markers!
 
 }
 

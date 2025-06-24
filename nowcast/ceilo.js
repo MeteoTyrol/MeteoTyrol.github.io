@@ -155,9 +155,10 @@ const ceiloData = {
 
 // Radiosondes
 async function loadCeilo(date) {
+  if (isWithinPast3Days(date)) {
   L.geoJSON(ceiloData, {
     attribution: 'Ceilometer Data: <a href= "https://portale.zamg.ac.at/umweltprofile/index.php"> GeoSphere Austria </a>',
-
+    
     pointToLayer: function (feature, latlng) {
         return L.marker(latlng,
         {
@@ -177,7 +178,7 @@ async function loadCeilo(date) {
       // url for full range (14km)
       let url_full = `https://portale.zamg.ac.at/umweltprofile/data/ceilometer/${id}/${id}_${YYYYMMDD}_CBH.png`;
       
-      if (isWithinPast3Days(date)) {
+      
         layer.bindPopup(`
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>${feature.properties.name}</h4>
@@ -189,18 +190,11 @@ async function loadCeilo(date) {
                 <a href="${url_full}" target="ceilo">Full Range Plot</a>
             `);
       }
-      else {
-        layer.bindPopup(`
-                <b>Image not availiable!</b><br>
-                <a href=${url_geosphere}>Geosphere Austria</a> only publishes data of today and the past 2 Days.
-                <h4>${feature.properties.name}</h4>
-                <ul>
-                    <li>Station ID: ${id}
-                    <li>Type: ${feature.properties.type} Noch Link hinzufügen!!!!
-                <ul>
-                `);
-      }
-    }
+      
+    
   }).addTo(overlays.ceilo);
+
+  }
+  else {overlays.ceilo.clearLayers();}
 }
 

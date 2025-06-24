@@ -15,12 +15,13 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 
 // Overlays definieren
 let overlays = {
-    raso: L.featureGroup().addTo(map),
-    lidar: L.featureGroup().addTo(map),
+    raso: L.featureGroup(),
+    lidar: L.featureGroup(),
     geosphere: L.featureGroup(),
     aws: L.featureGroup().addTo(map),
     uibk: L.featureGroup(),
-    ceilo: L.featureGroup().addTo(map),
+    ceilo: L.featureGroup(),
+    temp: L.featureGroup().addTo(map),
 };
 
 // Hintergrund-Layer
@@ -36,7 +37,7 @@ L.control.layers({
         "Lidar": overlays.lidar,
         //"Geosphere Stations": overlays.geosphere,
         "AWS Stations": overlays.aws,
-        //"UIBK Stations": overlays.uibk,
+        "Temperature": overlays.temp,
         "Ceilometer": overlays.ceilo
 
     }
@@ -133,6 +134,14 @@ noUiSlider.create(slider, {
 slider.noUiSlider.on('end', function(values) {
     let sliderValues = values.map(Number);
     loadAWS(dateObj, sliderValues);
+    loadTemp(dateObj, sliderValues);
+    
+});
+
+slider.noUiSlider.on('start', function(values) {
+    let sliderValues = values.map(Number);
+    loadAWS(dateObj, sliderValues);
+    loadTemp(dateObj, sliderValues);
     
 });
 
@@ -155,5 +164,6 @@ function loadAll(date_raw) {
     loadCeilo(dateObj);
     loadLidar(dateObj);
     loadAWS(dateObj,[450, 1500]); //inital filter for height same as slider
+    loadTemp(dateObj,[450, 1500])
     //loadGeosphere();
 }

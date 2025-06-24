@@ -2,6 +2,60 @@
 // vom AWS Beispiel übernommen und angepasst
 
 
+const COLORS = {
+    temperature: [
+        { min: -100, max: -25, color: "#9f80ff" },
+        { min: -25, max: -20, color: "#784cff" },
+        { min: -20, max: -15, color: "#0f5abe" },
+        { min: -15, max: -10, color: "#1380ff" },
+        { min: -10, max: -5, color: "#19cdff" },
+        { min: -5, max: 0, color: "#8fffff" },
+        { min: 0, max: 5, color: "#b0ffbc" },
+        { min: 5, max: 10, color: "#ffff73" },
+        { min: 10, max: 15, color: "#ffbe7d" },
+        { min: 15, max: 20, color: "#ff9b41" },
+        { min: 20, max: 25, color: "#ff5a41" },
+        { min: 25, max: 30, color: "#ff1e23" },
+        { min: 30, max: 100, color: "#fa3c96" },
+
+    ],
+    snowheight:[
+        { min:0, max:1, color: "#fff" },
+        { min:1, max:10, color: "#ffffb2" },
+        { min:10, max:25, color: "#b0ffbc" },
+        { min:25, max:50, color: "#8cffff" },
+        { min:50, max:100, color: "#19cdff" },
+        { min:100, max:200, color: "#1982ff" },
+        { min:200, max:300, color: "#0f5abe" },
+        { min:300, max:400, color: "#784bff" },
+        { min:400, max:1000, color: "#cd0feb" },
+    ],
+
+    wind: [
+        {min: 0, max: 5, color: "#ffff64"},
+        {min: 5, max: 10, color: "#c8ff64;"},
+        {min: 10, max: 20, color: "#96ff96;"},
+        {min: 20, max: 40, color: "#32c8ff"},
+        {min: 40, max: 60, color: "#6496ff"},
+        {min: 60, max: 80, color: "#9664ff"},
+        {min: 80, max: 200, color: "#ff3232"},
+    ],
+}
+
+function getColor(value, ramp) {
+    for (let rule of ramp) {
+        //console.log("rule", rule);
+        if (value >= rule.min && value < rule.max) {
+            return rule.color; // return is an automatic break
+        }
+    }
+}
+
+
+
+
+
+//console.log(getColor(0, COLORS.temperature));
 
 
 async function loadAWS(date, sliderValues) {
@@ -15,22 +69,18 @@ async function loadAWS(date, sliderValues) {
         let jsondata = await response.json(); //dann die Daten in json umwandeln
 
         overlays.aws.clearLayers(); //clear overlay before adding markers
-        console.log(sliderValues)
         min_height = sliderValues[0]
         max_height = sliderValues[1]
 
 
         // Wetterstationen mit Icons und Popups
-        overlays.aws.clearLayers();
         L.geoJSON(jsondata, {
             attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
                 if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
             },
             pointToLayer: function (feature, latlng) {
-                console.log(feature.geometry.coordinates[2]);
                 let iconName = 'anemometer_AWS.png';
-
                 return L.marker(latlng, {
                     icon: L.icon({
                         iconUrl: `icons/${iconName}`,
@@ -42,7 +92,7 @@ async function loadAWS(date, sliderValues) {
 
             },
             onEachFeature: function (feature, layer) {
-                //console.log(feature);
+                
                 let pointInTime = new Date(feature.properties.date); //new date macht aus dem String ein Date-Objekt
                 //console.log(feature.properties.date)
                 //console.log(pointInTime);
@@ -66,9 +116,55 @@ async function loadAWS(date, sliderValues) {
         }).addTo(overlays.aws);
     }
 
-    else { overlays.aws.clearLayers(); } // if the date is not today, dont show AWS popups!
+    else { overlays.aws.clearLayers(); } // if the date is not today, dont show AWS popups and markers!
 
 }
+
+
+async function loadTemp(date, sliderValues) {
+    YYYYMMDD = getYYYYMMDD(date)
+    YYYYMMDDtoday = getYYYYMMDD(today)
+
+    if (YYYYMMDD == YYYYMMDDtoday) {
+
+        let url = "https://static.avalanche.report/weather_stations/stations.geojson"
+        let response = await fetch(url); // await -> warte erst bis die Daten da sind
+        let jsondata = await response.json(); //dann die Daten in json umwandeln
+
+        
+        min_height = sliderValues[0]
+        max_height = sliderValues[1]
+
+
+        // Wetterstationen mit Icons und Popups
+        overlays.temp.clearLayers(); //clear overlay before adding markers
+        
+        L.geoJSON(jsondata, {
+            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
+            filter: function (feature) {
+                if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
+            },
+            pointToLayer: function (feature, latlng) {
+            let color = getColor(feature.properties.LT, COLORS.temperature);
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    html: `<span style ="background-color:${color}">${feature.properties.LT || "-"}°C </span>`,
+                    className: "aws-div-icon",
+
+                }),
+            });
+
+            },
+
+
+        }).addTo(overlays.temp);
+    }
+
+    else { overlays.temp.clearLayers(); } // if the date is not today, dont show popups or markers!
+
+}
+
+
 
 function strIDs(jsondata) {
     str = "";
@@ -82,6 +178,31 @@ function strIDs(jsondata) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function getCurrentParam(param, jsondata) {
     stationid_str = strIDs(jsondata)
     const url_temp = "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters={param}&{id}&output_format=geojson"
@@ -90,6 +211,7 @@ async function getCurrentParam(param, jsondata) {
     console.log(url_value)
     return url_value
 }
+
 
 
 
@@ -142,10 +264,3 @@ async function loadGeosphere() {
 
 }
 
-/* <ul>
-                        <li>Temperatur: ${featu.properties.LT !== undefined ? feature.properties.LT.toFixed(1) : "-"} °C</li> <!--- this is a comment--->
-                        <li>Relative Luftfeuchte : ${feature.properties.RH || "-"} %</li>
-                        <li>Windgeschwindigkeit: ${feature.properties.WG || "-"} m/s</li>
-                        <li>Windrichtung: ${feature.properties.WR || "-"}°</li>
-                        <li>Schneehöhe: ${feature.properties.HS !== undefined ? feature.properties.HS.toFixed(1) : "-"} cm</li>
-                    <ul>*/

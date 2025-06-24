@@ -62,3 +62,14 @@ footer nav {
     margin-bottom: 80px;
 
 }
+
+.aws-div-icon-winddir span {
+    font-size: 1.1em;
+    text-align: center;
+    text-shadow: 
+        -2px -2px 0 black,
+        -2px 2px 0 black,
+        2px -2px 0 black,
+        2px 2px 0 black;
+}
+

@@ -1,13 +1,13 @@
-// Innsbruck
-let ibk = {
+// center
+let center = {
     lat: 47.267222,
-    lng: 11.392778
+    lng: 13.392778
 };
 
 // Karte initialisieren
 let map = L.map("map", {
-    center: [ibk.lat, ibk.lng],
-    zoom: 7,
+    center: [center.lat, center.lng],
+    zoom: 8,
     keyboard: false
 });
 
@@ -151,7 +151,7 @@ async function addCloudLayer(dataGeoJson) {
     overlays.cloud.addLayer(cloudLayer);
 }
 
-// Pressure-Overlay
+// Wind-Overlay
 async function addWindLayer(dataGeoJson) {
     overlays.wind.clearLayers();
     let windLayer = L.geoJson(dataGeoJson, {
@@ -208,6 +208,7 @@ function extractAllTimes(dataGeoJson) {
         await addTemperatureLayer(dataGeoJson);
         await addPressureLayer(dataGeoJson);
         await addCloudLayer(dataGeoJson);
+        await addWindLayer(dataGeoJson);
         // Optional: Zeitstempel im HTML anzeigen
         const tsDiv = document.getElementById('layer-timestamp');
         if (tsDiv) tsDiv.textContent = "Zeit: " + allTimes[currentIndex];

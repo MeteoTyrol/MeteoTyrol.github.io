@@ -101,7 +101,6 @@ async function loadAWS(date, sliderValues) {
 
         // Wetterstationen mit Icons und Popups
         L.geoJSON(jsondata, {
-            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
                 if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) { return true }
             },
@@ -166,7 +165,6 @@ async function loadTemp(date, sliderValues) {
         overlays.temp.clearLayers(); //clear overlay before adding markers
 
         L.geoJSON(jsondata, {
-            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
                 if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) {
                     if (feature.properties.LT !== undefined) { return true }
@@ -210,7 +208,6 @@ async function loadRH(date, sliderValues) {
         overlays.rh.clearLayers(); //clear overlay before adding markers
 
         L.geoJSON(jsondata, {
-            attribution: 'AWS Data: <a href= "https://avalanche.report/weather/stations"> AWS </a>',
             filter: function (feature) {
                 if (feature.geometry.coordinates[2] < max_height && feature.geometry.coordinates[2] > min_height) {
                     if (feature.properties.RH !== undefined) { return true }
@@ -341,7 +338,6 @@ async function loadGeosphere() {
 
     // Wetterstationen mit Icons und Popups
     L.geoJSON(jsondata, {
-        attribution: 'AWS Data: <a href= "https://data.hub.geosphere.at/dataset/klima-v2-10min"> Geosphere Austria</a>',
         //filter: funciton (feature) {
         //if feature.properties
         //},

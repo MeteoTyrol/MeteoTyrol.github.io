@@ -15,15 +15,13 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], ibk.zoom);
 
 // Overlays definieren
 let overlays = {
-    raso: L.featureGroup(),
-    lidar: L.featureGroup(),
-    geosphere: L.featureGroup(),
-    aws: L.featureGroup(),
-    uibk: L.featureGroup(),
-    ceilo: L.featureGroup(),
+    raso: L.featureGroup().addTo(map),
+    lidar: L.featureGroup().addTo(map),
+    ceilo: L.featureGroup().addTo(map),
+    aws: L.featureGroup().addTo(map),
     temp: L.featureGroup(),
     rh: L.featureGroup(),
-    wind: L.featureGroup().addTo(map),
+    wind: L.featureGroup()
 };
 
 
@@ -157,10 +155,9 @@ L.control.layers({
     {
         "Radiosondes": overlays.raso,
         "Lidar": overlays.lidar,
-        //"Geosphere Stations": overlays.geosphere,
+        "Ceilometer": overlays.ceilo,
         "AWS Stations": overlays.aws,
         "Temperature": overlays.temp,
-        "Ceilometer": overlays.ceilo,
         "Relative Humidity": overlays.rh,
         "Wind": overlays.wind,
 

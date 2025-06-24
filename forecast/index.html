@@ -54,7 +54,7 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-datepicker@1.0.2/dist/leaflet-datepicker.min.js"></script>
 
     <!-- eigene Stiele und Skript-->
-    
+
     <link rel="stylesheet" href="../styleKartenseiten.css">
     <script defer src="main.js"></script>
 
@@ -63,13 +63,13 @@
 <body>
     <main>
         <h2><i class="fa-regular fa-map"></i> Forecast Map Air Quality</h2>
-            <nav>
-                <i class="fab fa-github"></i>
-                <a href="https://github.com/MeteorologyIBK/">Github</a>
-            </nav>
+        <nav>
+            <i class="fab fa-github"></i>
+            <a href="https://github.com/MeteorologyIBK/">Github</a>
+        </nav>
         <article>
             <div id="map"></div>
-            <div id="no2-controls">
+            <!--  <div id="no2-controls">
                 <button id="no2-left"><i class="fa-solid fa-arrow-left"></i></button>
                 <span id="layer-label">NO₂</span>
                 <button id="no2-right"><i class="fa-solid fa-arrow-right"></i></button>
@@ -86,7 +86,10 @@
             </div>
             <div> 
                 <span> Timestamp: $ </span>
-            </div>
+            </div>-->
+            <button id="time-prev">&larr; Vorheriger Zeitpunkt</button>
+            <button id="time-next">Nächster Zeitpunkt &rarr;</button>
+            <div id="layer-timestamp" style="width:100%;max-width:700px;margin:8px auto 0 auto;text-align:center;font-size:15px;"></div>
         </article>
         <footer>
             <strong>Data Sources:

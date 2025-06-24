@@ -160,7 +160,7 @@ function showPM10(jsondatapm10) {
 
     function getPMColor(value) {
         if (value < 20) return "#00CD00";
-        if (value < 35) return "#ffff00";
+        if (value < 40) return "#ffff00";
         if (value < 50) return "#ff7e00";
         if (value < 100) return "#ff0000";
         if (value < 150) return "#8f3f97";

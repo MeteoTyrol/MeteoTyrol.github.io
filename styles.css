@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital@0;1&family=Roboto:wght@300&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,18 +7,34 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    
+    font-family: "Open Sans", sans-serif; 
+}
+
+body main nav {
+    text-align: left;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding-top: 1em;
 }
 
 .logo {
     font-size: 24px;
     padding: 10px;
-    /*background-color: rgba(224,238,238);*/
+    background-color: rgba(224,238,238);
+}
+
+main {
+    max-width: 1200px;
+    margin: auto;
 }
 
 nav {
     display: flex;
+}
+
+header{
+    background-color: rgba(224,238,238);
+    grid-template-columns: 80% 20%;
 }
 
 ul {
@@ -29,7 +47,7 @@ li {
 }
 
 a {
-    text-decoration: none;
+    
     color: black;
 }
 

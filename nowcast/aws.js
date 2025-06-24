@@ -2,10 +2,6 @@
 // vom AWS Beispiel übernommen und angepasst
 
 
-
-
-
-
 async function loadAWS(date) {
     YYYYMMDD = getYYYYMMDD(date)
     YYYYMMDDtoday = getYYYYMMDD(today)

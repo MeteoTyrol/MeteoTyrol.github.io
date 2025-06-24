@@ -18,10 +18,13 @@
     <!-- Leaflet Providers -->
     <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
 
-    <!--Leaflet calendar-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/antoniovlx/leaflet-calendar@master/css/leaflet-calendar.css" />
-    <script src="https://cdn.jsdelivr.net/gh/antoniovlx/leaflet-calendar@master/js/leaflet-calendar.js"></script>
+    <!--Leaflet minimap-->
+    <script src=" https://cdn.jsdelivr.net/npm/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css " rel="stylesheet">
 
+    <!--Leaflet fullscreen-->
+    <script src=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/Leaflet.fullscreen.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/leaflet.fullscreen.min.css " rel="stylesheet">
 
     <!-- eigene Stile -->
     <link rel="stylesheet" href="../styleKartenseiten.css">
@@ -34,13 +37,27 @@
 <body>
     <main>
         <header>
+            <div class="logo">
+                <h1> Collection of Weather Data</h1>
+            </div> <br>
+            <nav>
+                <ul>
+                    <li><a href=konzept.pdf>Konzept</a></li>
+                    <li> <a href=./hindcast />Climate Data</a></li>
+                    <li><a href=./nowcast />Current Atmospheric Conditions</a></li>
+                    <li><a href=./forecast />Forecast Air Quality</a></li>
+                    <li><a href=./forecast2>Forecast</a></li>
+                    <li><a href=./topo />Model topography</a></li>
+                    <li><a href=./wiki />Wiki</a></li>
+                </ul>
+            </nav>
+        </header>
+        <article>
             <h2><i class="fa-regular fa-map"></i> Hindcast: Climate data</h2>
             <nav>
                 <i class="fab fa-github"></i>
                 <a href="https://github.com/MeteorologyIBK/">Github</a>
             </nav>
-        </header>
-        <article>
             <div id="map"></div>
         </article>
         <footer>

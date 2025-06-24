@@ -64,7 +64,7 @@ async function getDataPM10() {
     let url = `https://dataset.api.hub.geosphere.at/v1/grid/forecast/chem-v2-1h-9km?parameters=pm10surf&bbox=46.51%2C10.14%2C47.64%2C13.17&forecast_offset=0&output_format=geojson`;
     let response = await fetch(url);
     jsondatapm10 = await response.json();
-    //console.log(jsondatapm10);
+    console.log(jsondatapm10);
     showPM10(jsondatapm10);
 }
 
@@ -100,7 +100,7 @@ function showNO2(jsondatano2) {
                 let value = feature.properties.parameters.no2surf.data[currentNO2Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:${getNO2Color(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${value}</span>`,
+                        html: `<span style="background:${getNO2Color(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #88c;font-size:12px;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });

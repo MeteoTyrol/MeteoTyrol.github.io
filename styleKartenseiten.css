@@ -1,5 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital@0;1&family=Roboto:wght@300&display=swap');
 
+.logo {
+    font-size: 24px;
+    padding: 10px;
+    background-color: rgba(224,238,238);
+}
+
+header{
+    display: flex;
+    background-color: rgba(224,238,238);
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+}
+
+li {
+    padding: 10px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: "Open Sans", sans-serif;
 }
@@ -22,8 +48,8 @@ header h2 {
     margin: 0;
 }
 
-header nav {
-    text-align: right;
+body main nav {
+    text-align: left;
     font-size: 0.9em;
     font-weight: bold;
     padding-top: 1em;
@@ -43,10 +69,6 @@ footer {
     font-family: "Roboto", sans-serif;
     font-size: 0.9em;
     margin-top: 0.5em;
-}
-
-footer nav {
-    display: inline-block;
 }
 
 .raso-popup {

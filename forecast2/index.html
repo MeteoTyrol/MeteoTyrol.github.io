@@ -54,7 +54,7 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-datepicker@1.0.2/dist/leaflet-datepicker.min.js"></script>
 
     <!-- eigene Stiele und Skript-->
-    
+
     <link rel="stylesheet" href="../styleKartenseiten.css">
     <script defer src="NO_daten.js"></script>
 
@@ -62,23 +62,44 @@
 
 <body>
     <main>
-        <h2><i class="fa-regular fa-map"></i> Forecast Map </h2>
+        <header>
+            <div class="logo">
+                <h1> Collection of Weather Data</h1>
+            </div> <br>
             <nav>
-                <i class="fab fa-github"></i>
-                <a href="https://github.com/MeteorologyIBK/">Github</a>
+                <ul>
+                    <li><a href=konzept.pdf>Konzept</a></li>
+                    <li> <a href=./hindcast />Climate Data</a></li>
+                    <li><a href=./nowcast />Current Atmospheric Conditions</a></li>
+                    <li><a href=./forecast />Forecast Air Quality</a></li>
+                    <li><a href=./forecast2>Forecast</a></li>
+                    <li><a href=./topo />Model topography</a></li>
+                    <li><a href=./wiki />Wiki</a></li>
+                </ul>
             </nav>
+
+        </header>
+        <h2><i class="fa-regular fa-map"></i> Forcast map</h2>
+        <nav>
+            <i class="fab fa-github"></i>
+            <a href="https://github.com/MeteorologyIBK/">Github</a>
+            <!-- KI_BEGIN -->
+            <div id="layer-timestamp" style="width:100%;max-width:700px;margin:8px auto 0 auto;text-align:center;font-size:15px;"></div>
+            <!-- KI_END -->
+        </nav>
         <article>
             <div id="map"></div>
-            It takes up to a minute to load the data, so please wait a little bit.
-            <p>Handling: Use the arrows on your keypad to change the timestamp of the data            </p>
+             <strong>Data Sources:
+                <a href="https://api.met.no/weatherapi/locationforecast/2.0/documentation"> Norwegian Weather Service </a>
+            </strong>
+            <br>
+            <br>
+            It takes up to a minute to load the data, so please wait a little bit. <br>
+            <strong> Handling: </strong> Use the arrows on your keyboard to change the timestamp of the data
+
         </article>
         <footer>
-            <strong>Data Sources:
-                <a href="https://api.met.no/weatherapi/locationforecast/2.0/documentation"> Norwegian Weather Service </a>
-                </strong>
-
-            <a href="../index.html">Startseite</a>
-            <a href="../nowcast/index.html">aktuelle Messwerte</a>
+           
         </footer>
     </main>
 

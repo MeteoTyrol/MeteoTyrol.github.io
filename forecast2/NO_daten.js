@@ -15,6 +15,7 @@ let overlays = {
     temperature: L.featureGroup().addTo(map),
     pressure: L.featureGroup(),
     cloud: L.featureGroup(),
+    wind: L.featureGroup(),
 };
 
 // Layer control
@@ -25,6 +26,7 @@ L.control.layers({
     "Temperature": overlays.temperature,
     "Pressure": overlays.pressure,
     "Cloud Fraction": overlays.cloud,
+    "Wind speed": overlays.wind,
 }).addTo(map);
 
 // Maßstab
@@ -50,6 +52,7 @@ async function createDataGeoJson(geojson) {
         let apiResponse = await fetch(apiUrl);
         let jsondata = await apiResponse.json();
         if (!jsondata.properties?.timeseries) continue;
+        //console.log(jsondata);
         // Für jeden Zeitpunkt ein Feature erzeugen
         for (let ts of jsondata.properties.timeseries) {
             allFeatures.push({
@@ -60,6 +63,7 @@ async function createDataGeoJson(geojson) {
                     temp: ts.data.instant.details.air_temperature,
                     pressure: ts.data.instant.details.air_pressure_at_sea_level,
                     cloud: ts.data.instant.details.cloud_area_fraction,
+                    wind: ts.data.instant.details.wind_speed,
                     name: name
                 }
             });
@@ -145,6 +149,27 @@ async function addCloudLayer(dataGeoJson) {
     });
     overlays.cloud.addLayer(cloudLayer);
 }
+
+// Pressure-Overlay
+async function addWindLayer(dataGeoJson) {
+    overlays.wind.clearLayers();
+    let windLayer = L.geoJson(dataGeoJson, {
+        filter: function(feature) {
+            return feature.properties && feature.properties.time && feature.properties.time === allTimes[currentIndex];
+        },
+        pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    className: 'wind-label',
+                    html: `<span style="background:rgba(230,230,255,0.8);padding:2px 4px;border-radius:4px;border:1px solid #336;font-size:12px;">${feature.properties.wind} m/s</span>`,
+                    iconAnchor: [15, 15]
+                })
+            });
+        }
+    });
+    overlays.wind.addLayer(windLayer);
+}
+
 /* KI_BEGIN */
 // Alle Zeitpunkte extrahieren (einmalig nach dem Laden)
 let allTimes = [];
@@ -165,6 +190,7 @@ function extractAllTimes(dataGeoJson) {
     await addTemperatureLayer(dataGeoJson);
     await addPressureLayer(dataGeoJson);
     await addCloudLayer(dataGeoJson);
+    await addWindLayer(dataGeoJson);
 
     /* KI_BEGIN */
     // Pfeiltasten-Steuerung

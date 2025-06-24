@@ -26,28 +26,9 @@ let overlays = {
     wind: L.featureGroup().addTo(map),
 };
 
-// Hintergrund-Layer
-L.control.layers({
-    "OpenStreetMap": L.tileLayer.provider("OpenStreetMap.Mapnik").addTo(map),
-    "OpenTopoMap": L.tileLayer.provider("OpenTopoMap"),
-    "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
-    "BasemapAT Relief": L.tileLayer.provider('BasemapAT.terrain'),
-    "BasemapAT Oberfläche": L.tileLayer.provider('BasemapAT.surface'),
-},
-    {
-        "Radiosondes": overlays.raso,
-        "Lidar": overlays.lidar,
-        //"Geosphere Stations": overlays.geosphere,
-        "AWS Stations": overlays.aws,
-        "Temperature": overlays.temp,
-        "Ceilometer": overlays.ceilo,
-        "Relative Humidity": overlays.rh,
-        "Wind": overlays.wind,
-
-    }
 
 
-).addTo(map);
+
 
 
 
@@ -92,16 +73,29 @@ function isWithinPast3Days(date) {
 /* KI_END */
 
 
+// minimap plugin mit Grundkarte Tirol Sommer als Layer
+var osm2 = new L.TileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png");
+var miniMap = new L.Control.MiniMap(osm2, {
+    toggleDisplay: true,
+    minimized: false,
+}).addTo(map);
+
+//fullScreen 
+map.addControl(new L.Control.Fullscreen());
+
+
 // Global variable to store the selected date
 let dateObj = today;
 
 L.control.calendar({
     id: 1,
+    position: "topright",
     minDate: "2020-01-01",
     maxDate: getYYYY_MM_DD(today), //max day is today
     onSelectDate: (value) => {
         dateObj = new Date(value); // update global dateObj
         loadAll(value, [450, 1500]); // initial values for height filtering of station data
+        addRainViewer();
     },
     triggerFunctionOnLoad: true,
 }).addTo(map);
@@ -134,29 +128,77 @@ noUiSlider.create(slider, {
 });
 
 
-
+//Action when upper bound is changed
 slider.noUiSlider.on('end', function (values) {
     let sliderValues = values.map(Number);
     loadAll(dateObj, sliderValues);
 });
 
+//Action when lower bound is changed
 slider.noUiSlider.on('start', function (values) {
     let sliderValues = values.map(Number);
     loadAll(dateObj, sliderValues);
 
 });
 
-// Maßstab
+// Scale
 L.control.scale({
     imperial: false,
 }).addTo(map);
+
+// Hintergrund-Layer
+L.control.layers({
+    "OpenStreetMap": L.tileLayer.provider("OpenStreetMap.Mapnik").addTo(map),
+    "OpenTopoMap": L.tileLayer.provider("OpenTopoMap"),
+    "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
+    "BasemapAT Relief": L.tileLayer.provider('BasemapAT.terrain'),
+    "BasemapAT Oberfläche": L.tileLayer.provider('BasemapAT.surface'),
+},
+    {
+        "Radiosondes": overlays.raso,
+        "Lidar": overlays.lidar,
+        //"Geosphere Stations": overlays.geosphere,
+        "AWS Stations": overlays.aws,
+        "Temperature": overlays.temp,
+        "Ceilometer": overlays.ceilo,
+        "Relative Humidity": overlays.rh,
+        "Wind": overlays.wind,
+
+    }
+
+
+).addTo(map);
 
 // GeoJSON asynchron laden
 async function loadGeoJSON(url) {
     let response = await fetch(url);
     let geojson = await response.json();
-
 }
+
+// Rainviewer
+function addRainViewer() {
+    if (getYYYYMMDD(dateObj) == getYYYYMMDD(today)) {
+        map.rainviewerControl = L.control.rainviewer({
+            position: 'bottomleft',
+            nextButtonText: '   >   ',
+            playStopButtonText: '   \u23EF   ',
+            prevButtonText: '   <   ',
+            positionSliderLabelText: "Time:",
+            animationInterval: 500,
+            opacity: 0.9
+        }).addTo(map);
+        /*BEGIN_KI*/
+    } else {
+        // Remove existing Rainviewer control if present
+        if (map.rainviewerControl) {
+            map.removeControl(map.rainviewerControl);
+            map.rainviewerControl = null;
+        }
+    }
+    /*END_KI*/
+}
+
+
 
 function loadAll(date_raw, sliderValues) {
     // calendar returns the format YYYY-MM-DD
@@ -164,9 +206,9 @@ function loadAll(date_raw, sliderValues) {
     loadRadiosonde(dateObj);
     loadCeilo(dateObj);
     loadLidar(dateObj);
-    loadAWS(dateObj, sliderValues); 
+    loadAWS(dateObj, sliderValues);
     loadTemp(dateObj, sliderValues);
     loadRH(dateObj, sliderValues);
     loadWind(dateObj, sliderValues);
-    
+
 }

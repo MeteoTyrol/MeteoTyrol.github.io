@@ -58,6 +58,22 @@
     <link rel="stylesheet" href="../styleKartenseiten.css">
     <script defer src="main.js"></script>
 
+    <div class="logo">
+        <h1> Collection of Weather Data</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href=konzept.pdf>Konzept</a></li>
+            <li> <a href=./hindcast />Climate Data</a></li>
+            <li><a href=./nowcast />Current Atmospheric Conditions</a></li>
+            <li><a href=./forecast />Forecast Air Quality</a></li>
+            <li><a href=./forecast2>Forecast</a></li>
+            <li><a href=./topo />Model topography</a></li>
+            <li><a href=./wiki />Wiki</a></li>
+        </ul>
+    </nav>
+
+
 </head>
 
 <body>
@@ -66,9 +82,10 @@
         <nav>
             <i class="fab fa-github"></i>
             <a href="https://github.com/MeteorologyIBK/">Github</a>
-             <!-- KI_BEGIN -->
-            <div id="layer-timestamp" style="width:100%;max-width:700px;margin:8px auto 0 auto;text-align:right;font-size:15px;"></div>
+            <!-- KI_BEGIN -->
+            <div id="layer-timestamp" style="width:100%;max-width:700px;margin:8px auto 0 auto;text-align:center;font-size:15px;"></div>
             <!-- KI_END -->
+            <strong style="text-align: right;">Unit:</strong> [ug m-3]
         </nav>
         <article>
             <div id="map"></div>
@@ -90,12 +107,14 @@
             <div> 
                 <span> Timestamp: $ </span>
             </div>-->
-            
-           </article>
+
+        </article>
         <footer>
             <strong>Data Sources:
+                <a href="https://data.hub.geosphere.at/dataset/chem-v2-1h-9km"> Geosphere Austria</a>
                 <!--<a href="https://weather.uwyo.edu/upperair/sounding.shtml"> University of Wyoming </a> -->
-            </strong>
+            </strong> <br>
+            <strong>Handling:</strong> Use the arrows on your keyboard to change the timestamps. <br>
             <a href="../index.html">Startseite</a>
             <a href="../nowcast/index.html">aktuelle Messwerte</a>
         </footer>

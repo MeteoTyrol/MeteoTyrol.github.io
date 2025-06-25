@@ -116,7 +116,7 @@ async function addPressureLayer(dataGeoJson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'pressure-label',
-                    html: `<span class="map-value-icon-J" style="background:rgba(230,230,255,0.8)">${feature.properties.pressure} hPa</span>`,
+                    html: `<span class="map-value-icon-J2">${feature.properties.pressure} hPa</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -162,7 +162,7 @@ async function addWindLayer(dataGeoJson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'wind-label',
-                    html: `<span class="map-value-icon-J" style="background:rgba(230,230,255,0.8)">${feature.properties.wind} m/s</span>`,
+                    html: `<span class="map-value-icon-J2">${feature.properties.wind} m/s</span>`,
                     iconAnchor: [15, 15]
                 })
             });

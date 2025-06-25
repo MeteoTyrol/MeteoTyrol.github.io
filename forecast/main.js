@@ -83,16 +83,13 @@ let currentPM10Index = 0;
 
 function showNO2(jsondatano2) {
     let times = jsondatano2.timestamps;
-
     function getNO2Color(value) {
-        if (value < 40) return "#00CD00";
-        if (value < 100) return "#ffff00";
-        if (value < 150) return "#ff7e00";
-        if (value < 200) return "#ff0000";
-        if (value < 400) return "#8f3f97";
-        return "#7e0023";
-    }
-
+        if (value < 40) return "#50f0e6";
+        if (value < 90) return "#50ccaa";
+        if (value < 120) return "#f0e641";
+        if (value < 230) return "#ff5050";
+        if (value < 340) return "#960032";
+        return "#7d2181";}
     function updateNO2Layer() {
         overlays.NO2.clearLayers();
         L.geoJson(jsondatano2, {
@@ -105,33 +102,25 @@ function showNO2(jsondatano2) {
                     })
                 });
             }
-        }).addTo(overlays.NO2);
-    }
-
-
-
-    // Initial anzeigen
+        }).addTo(overlays.NO2);}
     updateNO2Layer();
-
     /* KI_BEGIN */
     // Zeitstempel im HTML anzeigen
     const tsDiv = document.getElementById('layer-timestamp');
     if (tsDiv && times && times.length > 0) {
-        tsDiv.textContent = "Zeit: " + formatTimestamp(times[currentNO2Index]);
-    }
+        tsDiv.textContent = "Zeit: " + formatTimestamp(times[currentNO2Index]);}
       /* KI_END */
 }
 
 function showO3(jsondatao3) {
     let times = jsondatao3.timestamps;
     function getO3Color(value) {
-        if (value < 60) return "#00CD00";
-        if (value < 120) return "#ffff00";
-        if (value < 180) return "#ff7e00";
-        if (value < 240) return "#ff0000";
-        if (value < 300) return "#8f3f97";
-        return "#7e0023";
-    }
+       if (value < 50) return "#50f0e6";
+        if (value < 100) return "#50ccaa";
+        if (value < 130) return "#f0e641";
+        if (value < 240) return "#ff5050";
+        if (value < 380) return "#960032";
+        return "#7d2181";}
 
     function updateO3Layer() {
         overlays.O3.clearLayers();
@@ -161,13 +150,12 @@ function showPM10(jsondatapm10) {
     let times = jsondatapm10.timestamps;
 
     function getPMColor(value) {
-        if (value < 20) return "#00CD00";
-        if (value < 40) return "#ffff00";
-        if (value < 50) return "#ff7e00";
-        if (value < 100) return "#ff0000";
-        if (value < 150) return "#8f3f97";
-        return "#7e0023";
-    }
+       if (value < 20) return "#50f0e6";
+        if (value < 40) return "#50ccaa";
+        if (value < 50) return "#f0e641";
+        if (value < 100) return "#ff5050";
+        if (value < 150) return "#960032";
+        return "#7d2181";}
 
     function updatePM10Layer() {
         overlays.PM10.clearLayers();

@@ -26,6 +26,7 @@ let overlays = {
 // Layer Control
 let layerControl = L.control.layers({
     "Openstreetmap": L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map),
+    "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
     "BasemapAT Grau": L.tileLayer.provider('BasemapAT.grau'),
 }, {
     "NO2": overlays.NO2,

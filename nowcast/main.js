@@ -25,11 +25,6 @@ let overlays = {
 };
 
 
-
-
-
-
-
 // DATE handling
 
 function getYYYYMMDD(date) {
@@ -125,9 +120,6 @@ L.control.calendar({
 
 
 var slider = document.getElementById('slider');
-
-
-
 noUiSlider.create(slider, {
     start: [500, 1500],
     step: 100,
@@ -149,7 +141,6 @@ noUiSlider.create(slider, {
     //format: wNumb({decimals:1}),
 });
 
-
 //Action when upper bound is changed
 slider.noUiSlider.on('end', function (values) {
     let sliderValues = values.map(Number);
@@ -160,7 +151,6 @@ slider.noUiSlider.on('end', function (values) {
 slider.noUiSlider.on('start', function (values) {
     let sliderValues = values.map(Number);
     loadAll(dateObj, sliderValues);
-
 });
 
 // Scale
@@ -231,5 +221,4 @@ function loadAll(date_raw, sliderValues) {
     loadTemp(dateObj, sliderValues);
     loadRH(dateObj, sliderValues);
     loadWind(dateObj, sliderValues);
-
 }

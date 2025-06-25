@@ -54,7 +54,7 @@ async function showTemp(jsondata) {
             if (temp !== null && temp !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${temp}°C</span>`,
+                        html: `<span class="map-value-icon-J2">${temp}°C</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -74,12 +74,12 @@ function showPres(jsondata) {
             //console.log(latlng)
             let pressure = feature.properties.parameters.p.data[currentYearIndex];
             if (pressure === null || pressure === undefined) return null;
-            return L.marker(latlng, { 
-                icon: L.divIcon({
-                    html: `<span>${pressure} hPa</span>`,
-                    iconAnchor: [15, 15]
-                })
-            });
+            return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<span class="map-value-icon-J2">${pressure} hPa </span>`,
+                        iconAnchor: [15, 15]
+                    })
+                });
         },
     }).addTo(overlays.pressure);
     updateYearInfo();
@@ -94,7 +94,7 @@ function showRain(jsondata) {
             if (rain !== null && rain !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${rain} mm</span>`,
+                        html: `<span class="map-value-icon-J2">${rain} mm</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -113,7 +113,7 @@ function showSun(jsondata) {
             if (sun !== null && sun !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${sun} h</span>`,
+                        html: `<span class="map-value-icon-J2">${sun} h</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -132,7 +132,7 @@ function showThunder(jsondata) {
             if (thunder !== null && thunder !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${thunder} days</span>`,
+                        html: `<span class="map-value-icon-J2">${thunder} days</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -151,7 +151,7 @@ function showHail(jsondata) {
             if (hail !== null && hail !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${hail} days</span>`,
+                        html: `<span class="map-value-icon-J2">${hail} days</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -170,7 +170,7 @@ function showSnow(jsondata) {
             if (snow !== null && snow !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${snow} days</span>`,
+                        html: `<span class="map-value-icon-J2">${snow} days</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -189,7 +189,7 @@ function showWind(jsondata) {
             if (wind !== null && wind !== undefined) {
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:#e0f7fa;padding:2px 6px;border-radius:4px;border:1px solid #00796b;font-size:12px;">${wind} m/s</span>`,
+                        html: `<span class="map-value-icon-J2">${wind} m/s</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -286,7 +286,7 @@ function updateYearInfo() {
     let timestamps = lastGeojson.timestamps;
     if (Array.isArray(timestamps) && timestamps[currentYearIndex]) {
         let year = timestamps[currentYearIndex].slice(0, 4);
-        document.getElementById('year-info').textContent = `Jahr: ${year}`;
+        document.getElementById('year-info').textContent = `Year: ${year}`;
     } else {
         document.getElementById('year-info').textContent = '';
     }

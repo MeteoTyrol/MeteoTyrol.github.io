@@ -12,18 +12,20 @@ header{
     grid-template-columns: 80% 20%;
 }
 
-ul {
+nav ul {
     display: flex;
     list-style-type: none;
 }
 
-li {
+nav ul li {
     padding: 10px;
 }
 
+#popup
+
 * {
     box-sizing: border-box;
-    margin: 0;
+    margin: 2px;
     padding: 0;
 }
 
@@ -73,8 +75,24 @@ footer {
     width: 255px
 }
 
+.raso-popup div ul {
+    margin-left: 6px;
+}
+
 .lidar-popup {
     width: 255px
+}
+
+.lidar-popup div ul {
+    margin-left: 6px;
+}
+
+.ceilo-popup div ul {
+    margin-left: 6px;
+}
+
+.aws-popup div ul {
+    margin-left: 6px;
 }
 
 .aws-div-icon-winddir span {

@@ -158,7 +158,7 @@ async function loadRadiosonde(date) {
       //predefine popup text to reuse it
       let popupText = `
         <h4>${feature.properties.name}</h4>
-          <ul>
+          <ul class=popup>
               <li> Station ID: ${id}
               <li> Date: ${date.toLocaleDateString()}
               <li> Time: ${time} UTC

@@ -178,6 +178,7 @@ async function loadCeilo(date) {
 
 
         layer.bindPopup(`
+          <div class="ceilo-popup">
                 <a href=${url} target="ceilo"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a>
                 <h4>Ceilometer ${feature.properties.name}</h4>
                 <ul>
@@ -186,6 +187,7 @@ async function loadCeilo(date) {
                     <li>Type: ${feature.properties.type}
                 <ul>
                 <a href="${url_full}" target="ceilo">Full Range Plot</a>
+          <div>
             `);
       }
 

@@ -119,18 +119,19 @@ async function loadAWS(date, sliderValues) {
             onEachFeature: function (feature, layer) {
 
                 let pointInTime = new Date(feature.properties.date); //new date macht aus dem String ein Date-Objekt
-                //console.log(feature.properties.date)
-                //console.log(pointInTime);
+                ;
                 layer.bindPopup(`
+                <div class="aws-popup">
                 <h4>${feature.properties.name} (${feature.geometry.coordinates[2]}m)</h4>
+                    <span>Updated: ${pointInTime.toLocaleString()}</span>
                     <ul>
                         <li>Temperatur: ${feature.properties.LT !== undefined ? feature.properties.LT.toFixed(1) : "-"} °C</li> <!--- this is a comment--->
                         <li>Relative Luftfeuchte : ${feature.properties.RH || "-"} %</li>
                         <li>Windgeschwindigkeit: ${feature.properties.WG || "-"} m/s</li>
                         <li>Windrichtung: ${feature.properties.WR || "-"}°</li>
-                        <li>Schneehöhe: ${feature.properties.HS !== undefined ? feature.properties.HS.toFixed(1) : "-"} cm</li>
                     <ul>
-                <span>${pointInTime.toLocaleString()}</span>
+                </div>
+                
 
         `); // || "-" wird verwendet wenn 0, undifined oder false.
                 //Betreiber: <a href="${feature.properties.operatorLink
@@ -270,9 +271,6 @@ async function loadWind(date, sliderValues) {
                 // round direction values to degrees because wind direction measurements are quite uncertain
                 //let dir = feature.properties.WR !== undefined ? feature.properties.WR.toFixed(0) : "-";
                 let dir = feature.properties.WR !== undefined ? feature.properties.WR.toFixed(0) : "-";
-
-                console.log(feature.properties.WG);
-                console.log(wind_ms);
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<span style="background-color: ${color}; display: flex; align-items: center; gap: 0px;">
@@ -293,10 +291,9 @@ async function loadWind(date, sliderValues) {
 }
 
 
-
-
-
-
+//Everything underneath this line was form my try to acces the Geosphere stations
+//But because their API does not allow so many requests (in the way i tried) 
+//This mission was aborted and all code below is left for someone else to try again
 
 function strIDs(jsondata) {
     str = "";
@@ -308,14 +305,6 @@ function strIDs(jsondata) {
     }
     return str;
 }
-
-
-
-
-
-//Everything underneath this line was form my try to acces the Geosphere stations
-//But because their API does not allow so many requests (in the way i tried) 
-//This mission was aborted and all code below is left for someone else to try again
 
 async function getCurrentParam(param, jsondata) {
     stationid_str = strIDs(jsondata)

@@ -113,10 +113,7 @@ async function loadLidar(date) {
               <li> Provider: <a href = "${feature.properties.provider_url}">${feature.properties.provider}</a>
               <li> Type: <a href=${feature.properties.type_url}>${feature.properties.type}</a>
               <li> Date: ${date.toLocaleDateString()}</li>
-            </ul>
-            
-          `
-
+            </ul>`
 
       //For today, need other URL for UIKB stations
       if (YYYYMMDD == YYYYMMDDtoday) {
@@ -127,8 +124,10 @@ async function loadLidar(date) {
 
         //create Popup
         layer.bindPopup(`
+          <div class="lidar-popup">
                 <a href=${url} target="lidar"><img src="${url}" alt="*" style="max-width: 250px; height: auto;"></a> 
-            ` + Popuptext
+            ` + Popuptext + `
+          <div>`
         );
       }
 
@@ -154,6 +153,7 @@ async function loadLidar(date) {
           //Geosphere: nichts älteres als 3 Tage
           if (feature.properties.provider == "Geosphere Austria") {
             layer.bindPopup(`
+              <div class="lidar-popup">
             <p><b>Image not available</b> <br>
             Geosphere Austria only provides Lidar data for the past three days. See <a href="https://portale.zamg.ac.at/umweltprofile/index.php">Umweltprofile</a></p>
           ` + Popuptext +
@@ -162,6 +162,7 @@ async function loadLidar(date) {
           // UIBK: Brauche VPN für vergangene plots, mache einen Popup mit Info zum VPN für UIBK
           else {
             layer.bindPopup(`
+            <div class="lidar-popup">
             <p><b>Image not available</b> <br>
             Plots for past lidar measuremnts from UIBK require a VPN connection to <a href = "https://www.uibk.ac.at/zid/anleitungen/vpn/vpn.html.de">University of Innsbruck</a>
             </p><br>

@@ -286,7 +286,7 @@ function updateYearInfo() {
     let timestamps = lastGeojson.timestamps;
     if (Array.isArray(timestamps) && timestamps[currentYearIndex]) {
         let year = timestamps[currentYearIndex].slice(0, 4);
-        document.getElementById('year-info').textContent = `Jahr: ${year}`;
+        document.getElementById('year-info').textContent = `Year: ${year}`;
     } else {
         document.getElementById('year-info').textContent = '';
     }

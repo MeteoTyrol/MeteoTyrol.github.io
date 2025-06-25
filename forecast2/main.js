@@ -193,7 +193,29 @@ var miniMap = new L.Control.MiniMap(osm2, {
 //fullScreen 
 map.addControl(new L.Control.Fullscreen());
 
+// Geo Search
+        const searchControl = new GeoSearch.GeoSearchControl({
+            provider: new GeoSearch.OpenStreetMapProvider(),
+            style: "bar",
+            searchLabel: "adress search"
+        });
+        map.addControl(searchControl);
 
+//Leaflet Locate Control
+        L.control.locate({
+            strings: {
+                title: "your location"
+            },
+            drawCircle: false
+        }).addTo(map);
+
+// Reset View
+        L.control.resetView({
+        position: "topleft",
+        title: "show startview",
+        latlng: map.getCenter(),
+        zoom: map.getZoom(),
+        }).addTo(map);
 
 // Hauptfunktion
 (async () => {

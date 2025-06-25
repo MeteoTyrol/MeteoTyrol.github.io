@@ -161,10 +161,8 @@ L.control.scale({
 // Hintergrund-Layer
 L.control.layers({
     "OpenStreetMap": L.tileLayer.provider("OpenStreetMap.Mapnik").addTo(map),
-    "OpenTopoMap": L.tileLayer.provider("OpenTopoMap"),
     "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery"),
     "BasemapAT Relief": L.tileLayer.provider('BasemapAT.terrain'),
-    "BasemapAT Oberfläche": L.tileLayer.provider('BasemapAT.surface'),
 },
     {
         "Radiosondes": overlays.raso,

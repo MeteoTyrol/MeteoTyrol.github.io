@@ -176,7 +176,7 @@ function showPM10(jsondatapm10) {
     /* KI_BEGIN */
     const tsDiv = document.getElementById('layer-timestamp');
     if (tsDiv && times && times.length > 0) {
-        tsDiv.textContent = "Zeit: " + formatTimestamp(times[currentPM10Index]);
+        tsDiv.textContent = "Time: " + formatTimestamp(times[currentPM10Index]);
     }
       /* KI_END */
 }

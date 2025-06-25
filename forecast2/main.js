@@ -217,6 +217,20 @@ map.addControl(new L.Control.Fullscreen());
         zoom: map.getZoom(),
         }).addTo(map);
 
+/* KI_BEGINN*/
+function formatTimestamp(isoString) {
+    const d = new Date(isoString);
+    const pad = n => n.toString().padStart(2, '0');
+    return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:00`;
+}
+
+function updateTimestampByIndex(idx) {
+    if (allTimes.length) {
+        document.getElementById('layer-timestamp').textContent = "Time: " + formatTimestamp(allTimes[idx]);
+    }
+}
+/*KI_END*/
+
 // Hauptfunktion
 (async () => {
     let geojson = await loadGeoJSON("station.geojson");
@@ -227,7 +241,10 @@ map.addControl(new L.Control.Fullscreen());
     await addCloudLayer(dataGeoJson);
     await addWindLayer(dataGeoJson);
 
-    /* KI_BEGIN */
+    /*KI_BEGINN*/
+    // Zeige initialen Timestep an
+    updateTimestampByIndex(currentIndex);
+
     // Pfeiltasten-Steuerung
     document.addEventListener('keydown', async function (e) {
         if (!allTimes.length) return;
@@ -243,14 +260,9 @@ map.addControl(new L.Control.Fullscreen());
         await addPressureLayer(dataGeoJson);
         await addCloudLayer(dataGeoJson);
         await addWindLayer(dataGeoJson);
-        // Optional: Zeitstempel im HTML anzeigen
-        const tsDiv = document.getElementById('layer-timestamp');
-        if (tsDiv) tsDiv.textContent = "Zeit: " + allTimes[currentIndex];
+
+        // Nach jedem Wechsel den aktuellen Timestep anzeigen
+        updateTimestampByIndex(currentIndex);
     });
-
-    // Optional: Zeitstempel initial anzeigen
-    const tsDiv = document.getElementById('layer-timestamp');
-    if (tsDiv && allTimes.length) tsDiv.textContent = "Zeit: " + allTimes[currentIndex];
-    /* KI_END */
 })();
-
+ /* KI_END */

@@ -100,7 +100,7 @@ function showNO2(jsondatano2) {
                 let value = feature.properties.parameters.no2surf.data[currentNO2Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:${getNO2Color(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #88c;font-size:12px;">${value}</span>`,
+                        html: `<span class="map-value-icon-J" style="background:${getNO2Color(value)}55;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -140,7 +140,7 @@ function showO3(jsondatao3) {
                 let value = feature.properties.parameters.o3surf.data[currentO3Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:${getO3Color(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #88c;font-size:12px;">${value}</span>`,
+                        html: `<span class="map-value-icon-J" style="background:${getO3Color(value)}55;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });
@@ -176,7 +176,7 @@ function showPM10(jsondatapm10) {
                 let value = feature.properties.parameters.pm10surf.data[currentPM10Index];
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<span style="background:${getPMColor(value)}55;padding:2px 6px;border-radius:4px;border:1px solid #cc8;font-size:12px;">${value}</span>`,
+                        html: `<span class="map-value-icon-J" style="background:${getPMColor(value)}55;">${value}</span>`,
                         iconAnchor: [15, 15]
                     })
                 });

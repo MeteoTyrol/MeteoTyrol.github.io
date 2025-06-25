@@ -44,15 +44,15 @@ async function showTemp(jsondata) {
         pointToLayer: function (feature, latlng) {
             // Temperaturwert aus den Daten holen (z.B. Mittelwert)
             let data = feature.properties.parameters.tl_mittel.data;
-let validTemp = data.find(d => d !== null && d !== undefined);
-if (validTemp !== undefined) {
-    return L.marker(latlng, {
-        icon: L.divIcon({
-            html: `<span style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${validTemp}°C</span>`,
-            iconAnchor: [15, 15]
-        })
-    });
-}
+            let validTemp = data.find(d => d !== null && d !== undefined);
+            if (validTemp !== undefined) {
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<span style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #888;font-size:12px;">${validTemp}°C</span>`,
+                        iconAnchor: [15, 15]
+                    })
+                });
+            }
         },
     }).addTo(overlays.temperature);
 }
@@ -60,11 +60,14 @@ if (validTemp !== undefined) {
 // Pressure-Layer
 currentIndex = 0;
 function showPres(jsondata) {
+    overlays.pressure.clearLayers(); // Vorherige Marker entfernen
+    
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
-            // Hole den Druckwert für dieses Feature
+            console.log(latlng)
             let pressure = feature.properties.parameters.p.data[currentIndex];
-            return L.marker(latlng, {
+            if (pressure === null || pressure === undefined) return null;
+            return L.marker(latlng, { // <-- latlng verwenden!
                 icon: L.divIcon({
                     html: `<span>${pressure} hPa</span>`,
                     iconAnchor: [15, 15]
@@ -112,14 +115,14 @@ map.addControl(new L.Control.Fullscreen());
 async function loadGeoJSON(url) {
     let response = await fetch(url);
     let geojson = await response.json();
-    console.log(geojson.features[0].properties);
+    console.log(geojson.features[0]);
     showTemp(geojson);
     showRain(geojson);
-    //showPres(geojson);
+    showPres(geojson);
     //showPressureAtEachPoint(geojson);
 };
 
-loadGeoJSON("./Jahressatz.geojson");
+loadGeoJSON("Jahressatz_lonlat.geojson");
 
 
 

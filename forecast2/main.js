@@ -96,7 +96,7 @@ async function addTemperatureLayer(dataGeoJson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'temp-label',
-                    html: `<span style="background:${getColor(value)};padding:2px 4px;border-radius:4px;border:1px solid #888;font-size:12px;">${value}°C</span>`,
+                    html: `<span class="map-value-icon-J" style="background:${getColor(value)}">${value}°C</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -116,7 +116,7 @@ async function addPressureLayer(dataGeoJson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'pressure-label',
-                    html: `<span style="background:rgba(230,230,255,0.8);padding:2px 4px;border-radius:4px;border:1px solid #336;font-size:12px;">${feature.properties.pressure} hPa</span>`,
+                    html: `<span class="map-value-icon-J" style="background:rgba(230,230,255,0.8)">${feature.properties.pressure} hPa</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -142,7 +142,7 @@ async function addCloudLayer(dataGeoJson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'cloud-label',
-                    html: `<span style="background:${getColor(value)};padding:2px 4px;border-radius:4px;border:1px solid #36a;font-size:12px;">${value} %</span>`,
+                    html: `<span class="map-value-icon-J" style="background:${getColor(value)}">${value} %</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -162,7 +162,7 @@ async function addWindLayer(dataGeoJson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: 'wind-label',
-                    html: `<span style="background:rgba(230,230,255,0.8);padding:2px 4px;border-radius:4px;border:1px solid #336;font-size:12px;">${feature.properties.wind} m/s</span>`,
+                    html: `<span class="map-value-icon-J" style="background:rgba(230,230,255,0.8)">${feature.properties.wind} m/s</span>`,
                     iconAnchor: [15, 15]
                 })
             });
@@ -193,7 +193,29 @@ var miniMap = new L.Control.MiniMap(osm2, {
 //fullScreen 
 map.addControl(new L.Control.Fullscreen());
 
+// Geo Search
+        const searchControl = new GeoSearch.GeoSearchControl({
+            provider: new GeoSearch.OpenStreetMapProvider(),
+            style: "bar",
+            searchLabel: "adress search"
+        });
+        map.addControl(searchControl);
 
+//Leaflet Locate Control
+        L.control.locate({
+            strings: {
+                title: "your location"
+            },
+            drawCircle: false
+        }).addTo(map);
+
+// Reset View
+        L.control.resetView({
+        position: "topleft",
+        title: "show startview",
+        latlng: map.getCenter(),
+        zoom: map.getZoom(),
+        }).addTo(map);
 
 // Hauptfunktion
 (async () => {

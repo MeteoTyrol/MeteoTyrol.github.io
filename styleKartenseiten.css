@@ -81,3 +81,10 @@ footer {
     font-size: 1.1em;
     text-align: center;
 }
+
+.map-value-icon-J {
+    padding:2px 4px;
+    border-radius:4px;
+    border:1px solid #336;
+    font-size:12px;
+}

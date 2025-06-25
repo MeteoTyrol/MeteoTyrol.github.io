@@ -27,6 +27,19 @@
     <script src=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/Leaflet.fullscreen.min.js "></script>
     <link href=" https://cdn.jsdelivr.net/npm/leaflet-fullscreen@1.0.2/dist/leaflet.fullscreen.min.css " rel="stylesheet">
 
+     <!-- Leaflet Geosearch -->
+    <script src=" https://cdn.jsdelivr.net/npm/leaflet-geosearch@4.2.0/dist/bundle.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/leaflet-geosearch@4.2.0/dist/geosearch.min.css " rel="stylesheet">
+
+    <!-- Leaflet Locate Control -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.84.2/dist/L.Control.Locate.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.84.2/dist/L.Control.Locate.min.css">
+    
+    <!-- Leaflet Reset view -->
+    <script src=" https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview@1.9.2/dist/L.Control.ResetView.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview@1.9.2/dist/L.Control.ResetView.min.css " rel="stylesheet">
+
+
     <!-- eigene Stile -->
     <link rel="stylesheet" href="../styleKartenseiten.css">
 
@@ -63,11 +76,15 @@
                 <i class="fab fa-github"></i>
                 <a href="https://github.com/MeteorologyIBK/">Github</a>
             </nav>
+            <div id="year-info" style="text-align:center;margin:8px;font-size:18px;"></div>
+            <div id="layer-timestamp" style="text-align:center;margin:8px;font-size:18px;"></div>
             <div id="map"></div>
         </article>
         <footer>
-            <strong>Data Sources:
-            </strong>
+            <strong>Data Sources: </strong> <a href="https://data.hub.geosphere.at/dataset/klima-v2-1y"> Geosphere Austria</a><br>
+
+            <strong> Handling: </strong> Use the arrows on your keyboard to change the timestamps. <br>
+            
             <nav>
 
             </nav>

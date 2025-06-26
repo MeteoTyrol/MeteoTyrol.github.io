@@ -100,7 +100,14 @@ footer {
     text-align: center;
 }
 
+.leaflet-div-icon {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 .map-value-icon-J {
+    background: transparent;
     padding:2px 4px;
     border-radius:4px;
     border:1px solid #336;
